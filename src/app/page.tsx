@@ -116,23 +116,8 @@ const processSteps = [
 ];
 
 // ---------------------------------------------------------------------------
-// Animation variants
+// Animation variants (used by testimonial carousel)
 // ---------------------------------------------------------------------------
-const staggerContainer = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.15, delayChildren: 0.3 },
-  },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
 
 // ============================================================================
 // PAGE COMPONENT
@@ -182,44 +167,30 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-deep-space/80 via-deep-space/60 to-transparent pointer-events-none z-[1]" />
         <div className="absolute inset-0 bg-gradient-to-t from-deep-space via-transparent to-transparent pointer-events-none z-[1]" />
 
-        {/* Content */}
+        {/* Content — pure CSS animations, no Framer Motion */}
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="flex flex-col items-center"
-          >
+          <div className="flex flex-col items-center hero-animate">
             {/* Main headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] as const }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-pure-white"
+            <h1
+              className="hero-animate-delay-1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-pure-white"
             >
               <span className="gradient-text">Intelligent</span> Automation
               <br />
               for <span className="gradient-text">Enterprise</span> Growth
-            </motion.h1>
+            </h1>
 
             {/* Subheadline */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
-              className="mt-6 max-w-2xl text-lg sm:text-xl text-cloud leading-relaxed"
+            <p
+              className="hero-animate-delay-2 mt-6 max-w-2xl text-lg sm:text-xl text-cloud leading-relaxed"
             >
               Aixcel Solutions architects AI systems that think, act, and scale
               — reducing operational costs by 40% while unlocking new revenue
               streams.
-            </motion.p>
+            </p>
 
             {/* CTA buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
-              className="mt-10 flex flex-col sm:flex-row gap-4"
+            <div
+              className="hero-animate-delay-3 mt-10 flex flex-col sm:flex-row gap-4"
             >
               <Button href="/book-consultation" size="lg">
                 Book a Discovery Call
@@ -227,18 +198,17 @@ export default function HomePage() {
               <Button href="/solutions" variant="secondary" size="lg">
                 View Our Solutions
               </Button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
 
-        {/* Scroll indicator */}
-        <motion.div
+        {/* Scroll indicator — pure CSS animation */}
+        <div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          style={{ animation: "hero-bounce 1.5s ease-in-out infinite" }}
         >
           <ChevronDown className="h-6 w-6 text-muted" />
-        </motion.div>
+        </div>
       </section>
 
       {/* ================================================================= */}
