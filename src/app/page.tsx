@@ -4,12 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Bot,
   Mic,
@@ -162,11 +157,6 @@ export default function HomePage() {
     return () => clearInterval(timer);
   }, [nextTestimonial]);
 
-  // --- Parallax for hero ---
-  const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
-  const heroY = useTransform(scrollY, [0, 600], [0, 120]);
-
   // =========================================================================
   return (
     <>
@@ -193,19 +183,18 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-deep-space via-transparent to-transparent pointer-events-none z-[1]" />
 
         {/* Content */}
-        <motion.div
-          style={{ opacity: heroOpacity, y: heroY }}
-          className="relative z-10 max-w-5xl mx-auto px-6 text-center"
-        >
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
             className="flex flex-col items-center"
           >
             {/* Main headline */}
             <motion.h1
-              variants={fadeUp}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] as const }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-pure-white"
             >
               <span className="gradient-text">Intelligent</span> Automation
@@ -215,7 +204,9 @@ export default function HomePage() {
 
             {/* Subheadline */}
             <motion.p
-              variants={fadeUp}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
               className="mt-6 max-w-2xl text-lg sm:text-xl text-cloud leading-relaxed"
             >
               Aixcel Solutions architects AI systems that think, act, and scale
@@ -225,7 +216,9 @@ export default function HomePage() {
 
             {/* CTA buttons */}
             <motion.div
-              variants={fadeUp}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
               className="mt-10 flex flex-col sm:flex-row gap-4"
             >
               <Button href="/book-consultation" size="lg">
@@ -236,7 +229,7 @@ export default function HomePage() {
               </Button>
             </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
 
         {/* Scroll indicator */}
         <motion.div
@@ -370,52 +363,50 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {caseStudies.map((study, index) => (
               <ScrollReveal key={study.slug} delay={index * 0.12}>
-                <Link href={`/case-studies/${study.slug}`} className="group block">
-                  <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-steel to-midnight border border-white/[0.06] h-full flex flex-col">
+                <Link href={`/case-studies/${study.slug}`} className="group block h-full">
+                  <Card className="h-full flex flex-col overflow-hidden">
                     {/* Case study image */}
                     {caseStudyImages[study.slug] && (
-                      <div className="relative w-full h-48 flex-shrink-0">
+                      <div className="relative w-full h-48 -mx-6 -mt-6 sm:-mx-8 sm:-mt-8 mb-6" style={{ width: "calc(100% + 3rem)" }}>
                         <Image
                           src={caseStudyImages[study.slug]}
                           alt={study.title}
                           width={600}
                           height={400}
                           quality={90}
+                          sizes="(max-width: 768px) 100vw, 33vw"
                           className="w-full h-48 object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-deep-space/60 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 to-transparent" />
                       </div>
                     )}
 
-                    {/* Content */}
-                    <div className="p-6 sm:p-8 flex flex-col justify-end flex-1">
-                      {/* Industry badge */}
-                      <span className="inline-block self-start mb-4 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-electric/10 text-electric border border-electric/20">
-                        {study.industry}
-                      </span>
+                    {/* Industry badge */}
+                    <span className="inline-block self-start mb-4 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-electric/10 text-electric border border-electric/20">
+                      {study.industry}
+                    </span>
 
-                      {/* Client name */}
-                      <p className="text-sm text-muted mb-2">{study.client}</p>
+                    {/* Headline metric */}
+                    <p className="text-3xl sm:text-4xl font-bold gradient-text mb-2">
+                      {study.results[0].value}
+                    </p>
+                    <p className="text-xs text-cloud mb-3">
+                      {study.results[0].description}
+                    </p>
 
-                      {/* Headline metric */}
-                      <p className="text-3xl sm:text-4xl font-bold gradient-text mb-3">
-                        {study.results[0].value}
-                      </p>
-                      <p className="text-xs text-cloud mb-3">
-                        {study.results[0].description}
-                      </p>
+                    {/* Title */}
+                    <h3 className="text-lg font-semibold text-pure-white leading-snug mb-2 line-clamp-2 flex-1">
+                      {study.title}
+                    </h3>
 
-                      {/* Title */}
-                      <h3 className="text-lg font-semibold text-pure-white leading-snug mb-4 line-clamp-2">
-                        {study.title}
-                      </h3>
+                    {/* Client name */}
+                    <p className="text-sm text-muted mb-4">{study.client}</p>
 
-                      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-electric group-hover:text-cyan-pulse transition-colors">
-                        Read Case Study
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </span>
-                    </div>
-                  </div>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-electric group-hover:text-cyan-pulse transition-colors">
+                      Read Case Study
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </Card>
                 </Link>
               </ScrollReveal>
             ))}

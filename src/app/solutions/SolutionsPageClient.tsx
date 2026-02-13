@@ -114,15 +114,18 @@ export default function SolutionsPageClient() {
               <motion.div key={solution.slug} variants={gridItem}>
                 <Card className="flex h-full flex-col overflow-hidden">
                   {/* Solution Image */}
-                  <Image
-                    src={solutionImages[solution.slug]}
-                    alt={solution.title}
-                    width={600}
-                    height={400}
-                    quality={90}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="w-full h-44 object-cover rounded-t-xl mb-4"
-                  />
+                  <div className="relative w-full h-44 -mx-6 -mt-6 sm:-mx-8 sm:-mt-8 mb-6 overflow-hidden rounded-t-xl" style={{ width: "calc(100% + 3rem)" }}>
+                    <Image
+                      src={solutionImages[solution.slug]}
+                      alt={solution.title}
+                      width={600}
+                      height={400}
+                      quality={90}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="w-full h-44 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-midnight/60 to-transparent" />
+                  </div>
 
                   {/* Icon */}
                   <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-electric/10">
