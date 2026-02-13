@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 48" fill="none">
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+  </defs>
+  <!-- Icon: Abstract 'A' neural mark -->
+  <g>
+    <!-- Outer hexagonal frame -->
+    <path d="M24 2 L44 13 L44 35 L24 46 L4 35 L4 13 Z" stroke="url(#logoGrad)" stroke-width="2" fill="none" opacity="0.3"/>
+    <!-- Inner neural 'A' shape -->
+    <path d="M24 8 L38 32 L32 32 L28 24 L20 24 L16 32 L10 32 Z" fill="url(#logoGrad)"/>
+    <!-- Neural crossbar with glow dots -->
+    <line x1="18" y1="22" x2="30" y2="22" stroke="#06B6D4" stroke-width="1.5"/>
+    <!-- Neural nodes -->
+    <circle cx="24" cy="8" r="2.5" fill="#3B82F6"/>
+    <circle cx="10" cy="32" r="2" fill="#06B6D4"/>
+    <circle cx="38" cy="32" r="2" fill="#06B6D4"/>
+    <circle cx="18" cy="22" r="1.5" fill="#FFFFFF"/>
+    <circle cx="30" cy="22" r="1.5" fill="#FFFFFF"/>
+    <!-- Neural connection lines -->
+    <line x1="24" y1="8" x2="4" y2="13" stroke="#3B82F6" stroke-width="0.5" opacity="0.4"/>
+    <line x1="24" y1="8" x2="44" y2="13" stroke="#06B6D4" stroke-width="0.5" opacity="0.4"/>
+    <line x1="10" y1="32" x2="4" y2="35" stroke="#3B82F6" stroke-width="0.5" opacity="0.4"/>
+    <line x1="38" y1="32" x2="44" y2="35" stroke="#06B6D4" stroke-width="0.5" opacity="0.4"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="56" y="36" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="28" letter-spacing="-0.02em">
+    <tspan fill="url(#textGrad)">AIXCEL</tspan>
+  </text>
+  <text x="160" y="36" font-family="Inter, system-ui, sans-serif" font-weight="300" font-size="28" letter-spacing="-0.02em" fill="#64748B">
+    Solutions
+  </text>
+</svg>
