@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -57,6 +58,10 @@ export default function ScrollReveal({
   once = true,
   className,
 }: ScrollRevealProps) {
+  // Only apply initial="hidden" AFTER hydration to prevent SSR opacity:0 sticking
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const offset = getOffset(direction, distance);
 
   const variants: Variants = {
@@ -81,7 +86,7 @@ export default function ScrollReveal({
     <motion.div
       className={cn(className)}
       variants={variants}
-      initial="hidden"
+      initial={mounted ? "hidden" : false}
       whileInView="visible"
       viewport={{ once, amount: 0.05, margin: "-50px" }}
     >

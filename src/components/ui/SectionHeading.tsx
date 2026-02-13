@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -50,13 +51,17 @@ export default function SectionHeading({
   align = "center",
   className,
 }: SectionHeadingProps) {
+  // Only apply initial="hidden" AFTER hydration to prevent SSR opacity:0 sticking
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const alignClass = align === "center" ? "text-center mx-auto" : "text-left";
 
   return (
     <motion.div
       className={cn("max-w-3xl mb-16", alignClass, className)}
       variants={containerVariants}
-      initial="hidden"
+      initial={mounted ? "hidden" : false}
       whileInView="visible"
       viewport={{ once: true, amount: 0.1, margin: "-50px" }}
     >
