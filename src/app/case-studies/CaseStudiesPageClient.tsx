@@ -129,6 +129,8 @@ export default function CaseStudiesPageClient() {
                       alt={cs.client}
                       width={800}
                       height={500}
+                      quality={90}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="w-full h-48 object-cover rounded-t-xl"
                     />
                   )}

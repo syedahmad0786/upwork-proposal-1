@@ -303,6 +303,7 @@ export default function ContactPageClient() {
             src="/images/backgrounds/cta-bg.png"
             alt=""
             fill
+            quality={85}
             className="object-cover"
           />
         </div>

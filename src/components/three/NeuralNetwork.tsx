@@ -138,9 +138,10 @@ function Edges({
   );
 }
 
-/** Floating particles surrounding the network. */
+/** Floating particles surrounding the network with parallax mouse tracking. */
 function FloatingParticles({ count = 300 }: { count?: number }) {
   const ref = useRef<THREE.Points>(null);
+  const mouseOffset = useRef({ x: 0, y: 0 });
 
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
@@ -155,10 +156,19 @@ function FloatingParticles({ count = 300 }: { count?: number }) {
     return arr;
   }, [count]);
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock, pointer }) => {
     if (!ref.current) return;
-    ref.current.rotation.y = clock.getElapsedTime() * 0.03;
-    ref.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.02) * 0.1;
+    const t = clock.getElapsedTime();
+
+    // Particles track mouse with opposite offset for depth parallax
+    mouseOffset.current.x +=
+      (pointer.y * -0.15 - mouseOffset.current.x) * 0.03;
+    mouseOffset.current.y +=
+      (pointer.x * -0.25 - mouseOffset.current.y) * 0.03;
+
+    ref.current.rotation.y = t * 0.03 + mouseOffset.current.y;
+    ref.current.rotation.x =
+      Math.sin(t * 0.02) * 0.1 + mouseOffset.current.x;
   });
 
   return (
@@ -175,9 +185,10 @@ function FloatingParticles({ count = 300 }: { count?: number }) {
   );
 }
 
-/** The main network group that rotates slowly. */
+/** The main network group that rotates slowly and tracks the mouse cursor. */
 function Network() {
   const groupRef = useRef<THREE.Group>(null);
+  const mouseTarget = useRef({ x: 0, y: 0 });
 
   const nodePositions = useMemo(
     () => generateNodePositions(NODE_COUNT, RADIUS),
@@ -188,11 +199,18 @@ function Network() {
     [nodePositions],
   );
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock, pointer }) => {
     if (!groupRef.current) return;
     const t = clock.getElapsedTime();
-    groupRef.current.rotation.y = t * 0.08;
-    groupRef.current.rotation.x = Math.sin(t * 0.04) * 0.15;
+
+    // Smooth lerp toward mouse position (pointer is -1..1 range)
+    mouseTarget.current.x += (pointer.y * 0.4 - mouseTarget.current.x) * 0.05;
+    mouseTarget.current.y += (pointer.x * 0.6 - mouseTarget.current.y) * 0.05;
+
+    // Combine auto-rotation with mouse tracking
+    groupRef.current.rotation.y = t * 0.08 + mouseTarget.current.y;
+    groupRef.current.rotation.x =
+      Math.sin(t * 0.04) * 0.15 + mouseTarget.current.x;
   });
 
   return (
@@ -244,7 +262,7 @@ export default function HeroScene() {
       <Suspense fallback={<Fallback />}>
         <Canvas
           camera={{ position: [0, 0, 5], fov: 50 }}
-          dpr={[1, 1.5]}
+          dpr={[1, 2]}
           gl={{ antialias: true, alpha: true }}
           style={{ background: "transparent" }}
         >

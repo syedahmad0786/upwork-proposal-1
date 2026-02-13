@@ -276,6 +276,7 @@ export default function ProcessPageClient() {
           src="/images/backgrounds/dot-grid.png"
           alt=""
           fill
+          quality={85}
           className="object-repeat object-center"
           style={{ objectFit: "cover" }}
         />

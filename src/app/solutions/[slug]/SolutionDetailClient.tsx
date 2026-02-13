@@ -114,6 +114,7 @@ export default function SolutionDetailClient({
               alt=""
               fill
               className="object-cover opacity-10"
+              quality={85}
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-b from-abyss/40 via-abyss/70 to-abyss" />
@@ -161,6 +162,8 @@ export default function SolutionDetailClient({
                   src={solutionImages[solution.slug]}
                   alt={solution.title}
                   fill
+                  quality={90}
+                  sizes="288px"
                   className="object-cover"
                   priority
                 />

@@ -150,6 +150,8 @@ function FeaturedCard({ article }: { article: Article }) {
                 alt={article.title}
                 width={800}
                 height={500}
+                quality={90}
+                sizes="(max-width: 768px) 100vw, 100vw"
                 className="absolute inset-0 w-full h-full object-cover"
               />
             )}
@@ -218,6 +220,8 @@ function ArticleCard({
                 alt={article.title}
                 width={800}
                 height={500}
+                quality={90}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="w-full h-48 object-cover rounded-t-xl"
               />
             )}
@@ -336,7 +340,7 @@ export default function InsightsPageClient() {
         <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-cyan-pulse/5 blur-[100px]" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Section heading */}
         <SectionHeading
           eyebrow="Insights & Resources"

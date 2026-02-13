@@ -78,6 +78,7 @@ export default function SolutionsPageClient() {
           src="/images/hero/solutions-hero.png"
           alt=""
           fill
+          quality={85}
           className="object-cover opacity-20"
           priority
         />
@@ -100,7 +101,7 @@ export default function SolutionsPageClient() {
 
         {/* ---- Solution Grid ---- */}
         <motion.div
-          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2"
+          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
           variants={gridContainer}
           initial="hidden"
           whileInView="visible"
@@ -118,6 +119,8 @@ export default function SolutionsPageClient() {
                     alt={solution.title}
                     width={600}
                     height={400}
+                    quality={90}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="w-full h-44 object-cover rounded-t-xl mb-4"
                   />
 

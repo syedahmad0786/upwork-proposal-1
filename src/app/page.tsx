@@ -371,23 +371,24 @@ export default function HomePage() {
             {caseStudies.map((study, index) => (
               <ScrollReveal key={study.slug} delay={index * 0.12}>
                 <Link href={`/case-studies/${study.slug}`} className="group block">
-                  <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-steel to-midnight border border-white/[0.06] h-full">
+                  <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-steel to-midnight border border-white/[0.06] h-full flex flex-col">
                     {/* Case study image */}
                     {caseStudyImages[study.slug] && (
-                      <Image
-                        src={caseStudyImages[study.slug]}
-                        alt={study.title}
-                        width={600}
-                        height={400}
-                        className="w-full h-48 object-cover rounded-t-xl"
-                      />
+                      <div className="relative w-full h-48 flex-shrink-0">
+                        <Image
+                          src={caseStudyImages[study.slug]}
+                          alt={study.title}
+                          width={600}
+                          height={400}
+                          quality={90}
+                          className="w-full h-48 object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-deep-space/60 to-transparent" />
+                      </div>
                     )}
 
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-deep-space via-deep-space/70 to-transparent z-[1]" />
-
                     {/* Content */}
-                    <div className="relative z-10 p-6 sm:p-8 flex flex-col justify-end min-h-[360px]">
+                    <div className="p-6 sm:p-8 flex flex-col justify-end flex-1">
                       {/* Industry badge */}
                       <span className="inline-block self-start mb-4 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-electric/10 text-electric border border-electric/20">
                         {study.industry}
@@ -575,6 +576,7 @@ export default function HomePage() {
           src="/images/backgrounds/cta-bg.png"
           alt=""
           fill
+          quality={85}
           className="absolute inset-0 object-cover opacity-30 pointer-events-none"
         />
 

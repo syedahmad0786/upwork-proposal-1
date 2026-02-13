@@ -249,6 +249,8 @@ function IndustryCard({
             alt={industry.name}
             width={800}
             height={500}
+            quality={90}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="w-full h-44 object-cover rounded-t-xl"
           />
         </div>
@@ -339,7 +341,7 @@ export default function IndustriesPageClient() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-emerald/5 blur-[100px]" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Hero heading */}
         <SectionHeading
           eyebrow="Industries We Serve"

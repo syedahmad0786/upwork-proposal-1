@@ -2,6 +2,7 @@
 
 @theme inline {
   --color-deep-space: #0A0E1A;
+  --color-abyss: #070A14;
   --color-midnight: #111827;
   --color-steel: #1E293B;
   --color-electric: #3B82F6;
@@ -50,7 +51,7 @@ body {
 
 .gradient-border {
   position: relative;
-  background: #111827;
+  background: var(--color-midnight);
   border-radius: 16px;
 }
 .gradient-border::before {
