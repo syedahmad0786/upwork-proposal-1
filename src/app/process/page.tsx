@@ -1,12 +1,11 @@
-import type { Metadata } from "next";
-import ProcessPageClient from "./ProcessPageClient";
+import type { Metadata } from 'next';
+import ProcessClient from './ProcessClient';
 
 export const metadata: Metadata = {
-  title: "Our Process",
-  description:
-    "Discover Aixcel Solutions' proven 4-phase AI implementation process — from discovery and strategy to deployment and continuous optimization.",
+  title: 'Process',
+  description: 'Our proven 4-step process: Discovery, Strategy, Build & Deploy, Optimize & Scale. See results in weeks, not months.',
 };
 
 export default function ProcessPage() {
-  return <ProcessPageClient />;
+  return <ProcessClient />;
 }

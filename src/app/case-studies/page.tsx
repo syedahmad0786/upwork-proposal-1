@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import CaseStudiesPageClient from "./CaseStudiesPageClient";
+import type { Metadata } from 'next';
+import CaseStudiesClient from './CaseStudiesClient';
 
 export const metadata: Metadata = {
-  title: "Case Studies",
+  title: 'Case Studies',
   description:
-    "Real results from real clients. See how Aixcel Solutions has delivered measurable ROI through AI automation across industries.",
+    'Real results for real businesses. See how AiXCEL has helped teams automate operations, deploy AI agents, and achieve measurable ROI.',
 };
 
 export default function CaseStudiesPage() {
-  return <CaseStudiesPageClient />;
+  return <CaseStudiesClient />;
 }

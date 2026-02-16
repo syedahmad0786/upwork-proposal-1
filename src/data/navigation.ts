@@ -1,7 +1,8 @@
 export interface NavDropdownItem {
-  label: string;
+  title: string;
+  description: string;
   href: string;
-  description?: string;
+  icon: string;
 }
 
 export interface NavLink {
@@ -10,98 +11,71 @@ export interface NavLink {
   dropdown?: NavDropdownItem[];
 }
 
-export const navigationLinks: NavLink[] = [
+export const navLinks: NavLink[] = [
   {
-    label: "Solutions",
-    href: "/solutions",
+    label: 'Services',
+    href: '/services',
     dropdown: [
       {
-        label: "AI Agents",
-        href: "/solutions/ai-agents",
-        description: "Autonomous multi-agent orchestration systems",
+        title: 'AI Agents',
+        description: 'Autonomous agents that plan, execute, and self-correct',
+        href: '/services/ai-agents',
+        icon: 'Bot',
       },
       {
-        label: "Voice AI",
-        href: "/solutions/voice-ai",
-        description: "Conversational AI with sub-500ms latency",
+        title: 'Voice AI',
+        description: 'Sub-500ms voice agents for 24/7 customer engagement',
+        href: '/services/voice-ai',
+        icon: 'Mic',
       },
       {
-        label: "Content Operations",
-        href: "/solutions/content-operations",
-        description: "AI-powered scalable content engines",
+        title: 'Process Automation',
+        description: 'End-to-end workflow automation with n8n, Make & Zapier',
+        href: '/services/process-automation',
+        icon: 'Workflow',
       },
       {
-        label: "Process Automation",
-        href: "/solutions/process-automation",
-        description: "End-to-end intelligent workflow automation",
+        title: 'Content Operations',
+        description: 'AI-powered content pipelines across all channels',
+        href: '/services/content-operations',
+        icon: 'Layers',
       },
       {
-        label: "AI Strategy",
-        href: "/solutions/ai-strategy",
-        description: "Fractional CAIO and transformation advisory",
+        title: 'Custom Development',
+        description: 'Bespoke apps, dashboards & integration platforms',
+        href: '/services/custom-development',
+        icon: 'Code2',
       },
       {
-        label: "Custom Development",
-        href: "/solutions/custom-development",
-        description: "Bespoke AI tools and product engineering",
+        title: 'AI Strategy',
+        description: 'Strategic consulting & AI implementation roadmaps',
+        href: '/services/ai-strategy',
+        icon: 'Lightbulb',
       },
     ],
   },
   {
-    label: "Industries",
-    href: "/industries",
-    dropdown: [
-      {
-        label: "Financial Services",
-        href: "/industries/financial-services",
-        description: "AI for banking, insurance, and fintech",
-      },
-      {
-        label: "Healthcare",
-        href: "/industries/healthcare",
-        description: "HIPAA-compliant AI for patient care and operations",
-      },
-      {
-        label: "Manufacturing",
-        href: "/industries/manufacturing",
-        description: "Supply chain and production optimization",
-      },
-      {
-        label: "E-Commerce & Retail",
-        href: "/industries/ecommerce",
-        description: "Personalization, fulfillment, and CX automation",
-      },
-      {
-        label: "Technology & SaaS",
-        href: "/industries/technology",
-        description: "Scaling support, onboarding, and operations",
-      },
-      {
-        label: "Professional Services",
-        href: "/industries/professional-services",
-        description: "Knowledge work automation and client delivery",
-      },
-    ],
+    label: 'Case Studies',
+    href: '/case-studies',
   },
   {
-    label: "Case Studies",
-    href: "/case-studies",
+    label: 'Industries',
+    href: '/industries',
   },
   {
-    label: "About",
-    href: "/about",
+    label: 'Process',
+    href: '/process',
   },
   {
-    label: "Blog",
-    href: "/blog",
+    label: 'Pricing',
+    href: '/pricing',
   },
   {
-    label: "Contact",
-    href: "/contact",
+    label: 'About',
+    href: '/about',
+  },
+  {
+    label: 'Blog',
+    href: '/blog',
   },
 ];
-
-export const ctaLink: NavLink = {
-  label: "Book a Discovery Call",
-  href: "/contact#discovery",
-};

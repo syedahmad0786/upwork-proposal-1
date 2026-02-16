@@ -1,12 +1,11 @@
-import type { Metadata } from "next";
-import AboutPageClient from "./AboutPageClient";
+import type { Metadata } from 'next';
+import AboutClient from './AboutClient';
 
 export const metadata: Metadata = {
-  title: "About Us",
-  description:
-    "Learn about Aixcel Solutions — our mission, values, and the expert team building intelligent AI automation systems for enterprises worldwide.",
+  title: 'About',
+  description: 'Meet Ahmad Bukhari — Agentic AI & Enterprise Automation Architect and founder of AiXCEL Solutions.',
 };
 
 export default function AboutPage() {
-  return <AboutPageClient />;
+  return <AboutClient />;
 }

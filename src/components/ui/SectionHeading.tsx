@@ -1,93 +1,62 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { motion } from 'framer-motion';
+import { fadeInUp } from '@/lib/animations';
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
-export interface SectionHeadingProps {
-  /** Small uppercase gradient text displayed above the heading. */
-  eyebrow?: string;
-  /** Main heading text (rendered as h2). */
-  heading: string;
-  /** Optional description paragraph below the heading. */
+interface SectionHeadingProps {
+  badge?: string;
+  badgeColor?: 'blue' | 'green' | 'pink' | 'cyan';
+  title: string;
+  titleHighlight?: string;
   description?: string;
-  /** Horizontal alignment. */
-  align?: "center" | "left";
-  className?: string;
+  align?: 'left' | 'center';
+  dark?: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// Animation variants
-// ---------------------------------------------------------------------------
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.12 },
-  },
+const badgeClasses = {
+  blue: 'badge',
+  green: 'badge-green',
+  pink: 'badge-pink',
+  cyan: 'badge',
 };
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
-
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
 
 export default function SectionHeading({
-  eyebrow,
-  heading,
+  badge,
+  badgeColor = 'green',
+  title,
+  titleHighlight,
   description,
-  align = "center",
-  className,
+  align = 'center',
+  dark = false,
 }: SectionHeadingProps) {
-  // Only apply initial="hidden" AFTER hydration to prevent SSR opacity:0 sticking
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  const alignClass = align === "center" ? "text-center mx-auto" : "text-left";
+  const alignClasses = align === 'center' ? 'text-center mx-auto' : 'text-left';
 
   return (
     <motion.div
-      className={cn("max-w-3xl mb-16", alignClass, className)}
-      variants={containerVariants}
-      initial={mounted ? "hidden" : false}
+      variants={fadeInUp}
+      initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.1, margin: "-50px" }}
+      viewport={{ once: true, margin: '-50px' }}
+      className={`max-w-3xl mb-16 ${alignClasses}`}
     >
-      {eyebrow && (
-        <motion.p
-          variants={fadeUp}
-          className="text-sm font-semibold uppercase tracking-widest gradient-text mb-4"
-        >
-          {eyebrow}
-        </motion.p>
+      {badge && (
+        <span className={`${dark ? 'badge-dark' : badgeClasses[badgeColor]} mb-4 inline-block`}>
+          {badge}
+        </span>
       )}
-
-      <motion.h2
-        variants={fadeUp}
-        className="text-3xl sm:text-4xl lg:text-5xl font-bold text-pure-white leading-tight"
-      >
-        {heading}
-      </motion.h2>
-
+      <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4 uppercase ${dark ? 'text-white' : 'text-heading'}`}>
+        {title}
+        {titleHighlight && (
+          <>
+            {' '}
+            <span className="gradient-text">{titleHighlight}</span>
+          </>
+        )}
+      </h2>
       {description && (
-        <motion.p
-          variants={fadeUp}
-          className="mt-4 text-lg text-cloud leading-relaxed"
-        >
+        <p className={`text-lg leading-relaxed text-pretty ${dark ? 'text-white/60' : 'text-caption'}`}>
           {description}
-        </motion.p>
+        </p>
       )}
     </motion.div>
   );

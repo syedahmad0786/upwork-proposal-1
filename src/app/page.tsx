@@ -1,569 +1,529 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import {
-  Bot,
-  Mic,
-  FileText,
-  Workflow,
-  Lightbulb,
-  Code,
-  Search,
-  Layout,
-  Rocket,
-  TrendingUp,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Star,
   ArrowRight,
-} from "lucide-react";
+  ArrowUpRight,
+  CheckCircle2,
+  Sparkles,
+  ChevronRight,
+  Zap,
+  Shield,
+  Clock,
+  TrendingUp,
+  Star,
+} from 'lucide-react';
+import { fadeInUp, staggerContainer, scaleIn } from '@/lib/animations';
+import SectionHeading from '@/components/ui/SectionHeading';
+import GlassCard from '@/components/ui/GlassCard';
+import AnimatedCounter from '@/components/ui/AnimatedCounter';
+import ScrollReveal from '@/components/ui/ScrollReveal';
+import { getIcon } from '@/components/ui/IconMap';
+import { services } from '@/data/services';
+import { caseStudies } from '@/data/caseStudies';
+import { testimonials } from '@/data/testimonials';
+import { stats, processSteps } from '@/data/stats';
+import { techTools, TechLogoItem } from '@/components/ui/TechLogos';
 
-import Button from "@/components/ui/Button";
-import Card from "@/components/ui/Card";
-import ScrollReveal from "@/components/ui/ScrollReveal";
-import SectionHeading from "@/components/ui/SectionHeading";
-import AnimatedCounter from "@/components/ui/AnimatedCounter";
+/* ─── Dynamic import for Three.js scene (no SSR) ─── */
+const HeroScene = dynamic(() => import('@/components/three/HeroScene'), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0 bg-[#0A0A0A]" />,
+});
 
-import { solutions } from "@/data/solutions";
-import { caseStudies } from "@/data/caseStudies";
-import { stats } from "@/data/stats";
-import { testimonials } from "@/data/testimonials";
-
-// ---------------------------------------------------------------------------
-// Dynamically import the 3D scene so it only loads on the client and doesn't
-// block SSR. The fallback spinner keeps the hero area visually occupied.
-// ---------------------------------------------------------------------------
-const HeroScene = dynamic(
-  () => import("@/components/three/NeuralNetwork"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-16 w-16 rounded-full border-2 border-electric/30 border-t-electric animate-spin" />
-      </div>
-    ),
-  },
-);
-
-// ---------------------------------------------------------------------------
-// Icon map -- lets us render the icon string stored in the solution data.
-// ---------------------------------------------------------------------------
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Bot,
-  Mic,
-  FileText,
-  Workflow,
-  Lightbulb,
-  Code,
-};
-
-// ---------------------------------------------------------------------------
-// Trust-bar companies
-// ---------------------------------------------------------------------------
-const companies = [
-  "TechCorp",
-  "Meridian Financial",
-  "NovaTech",
-  "Pacific Health",
-  "Catalyst Commerce",
-  "Vertex Mfg",
-  "Ascent Logistics",
-  "DataFlow Systems",
+const glowColors: Array<'green' | 'pink' | 'amber' | 'violet' | 'electric' | 'cyan'> = [
+  'green', 'pink', 'amber', 'violet', 'electric', 'cyan',
 ];
 
-// ---------------------------------------------------------------------------
-// Case study image mapping
-// ---------------------------------------------------------------------------
-const caseStudyImages: Record<string, string> = {
-  "meridian-financial-ai-agents": "/images/case-studies/meridian-financial.png",
-  "novatech-voice-ai": "/images/case-studies/novatech-voice.png",
-  "vertex-process-automation": "/images/case-studies/vertex-manufacturing.png",
-};
-
-// ---------------------------------------------------------------------------
-// Process steps
-// ---------------------------------------------------------------------------
-const processSteps = [
-  {
-    icon: Search,
-    title: "Discovery & AI Audit",
-    description:
-      "We map your operations, identify high-impact automation opportunities, and quantify the ROI of each initiative.",
-  },
-  {
-    icon: Layout,
-    title: "Strategy & Architecture",
-    description:
-      "A custom blueprint aligning AI capabilities with your business goals, technology stack, and compliance requirements.",
-  },
-  {
-    icon: Rocket,
-    title: "Build & Deploy",
-    description:
-      "Agile sprints deliver production-ready AI systems integrated with your existing infrastructure in weeks, not months.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Optimize & Scale",
-    description:
-      "Continuous monitoring, model retraining, and expansion to new use cases ensure compounding returns over time.",
-  },
-];
-
-// ---------------------------------------------------------------------------
-// Animation variants (used by testimonial carousel)
-// ---------------------------------------------------------------------------
-
-// ============================================================================
-// PAGE COMPONENT
-// ============================================================================
 export default function HomePage() {
-  // --- Testimonial carousel state ---
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  const nextTestimonial = useCallback(() => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-  }, []);
-
-  const prevTestimonial = useCallback(() => {
-    setCurrentTestimonial(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length,
-    );
-  }, []);
-
-  // Auto-rotate testimonials every 5 seconds
-  useEffect(() => {
-    const timer = setInterval(nextTestimonial, 5000);
-    return () => clearInterval(timer);
-  }, [nextTestimonial]);
-
-  // =========================================================================
   return (
     <>
-      {/* ================================================================= */}
-      {/* 1. HERO SECTION                                                    */}
-      {/* ================================================================= */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background video */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
-        >
-          <source src="/videos/Abstract_Neural_Network_Video_Generation.mp4" type="video/mp4" />
-        </video>
-
-        {/* 3D background */}
+      {/* ==========================================
+          HERO — Dark section with 3D scene
+          ========================================== */}
+      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#0A0A0A]">
+        {/* 3D Background Scene */}
         <HeroScene />
 
-        {/* Overlay gradient for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-deep-space/80 via-deep-space/60 to-transparent pointer-events-none z-[1]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-deep-space via-transparent to-transparent pointer-events-none z-[1]" />
+        {/* Overlay gradients for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/40 via-transparent to-[#0A0A0A]/60 z-[1]" />
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0A0A0A] to-transparent z-[1]" />
 
-        {/* Content — pure CSS animations, no Framer Motion */}
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          <div className="flex flex-col items-center hero-animate">
-            {/* Main headline */}
-            <h1
-              className="hero-animate-delay-1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-pure-white"
+        <div className="container-custom relative z-10">
+          <div className="max-w-5xl mx-auto text-center">
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="gradient-text">Intelligent</span> Automation
-              <br />
-              for <span className="gradient-text">Enterprise</span> Growth
-            </h1>
+              <span className="badge-dark mb-8 inline-flex items-center gap-2 text-xs">
+                <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse" />
+                100+ AUTOMATIONS DEPLOYED
+              </span>
+            </motion.div>
 
-            {/* Subheadline */}
-            <p
-              className="hero-animate-delay-2 mt-6 max-w-2xl text-lg sm:text-xl text-cloud leading-relaxed"
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] as const }}
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-white leading-[0.95] mb-8 uppercase tracking-tight"
             >
-              Aixcel Solutions architects AI systems that think, act, and scale
-              — reducing operational costs by 40% while unlocking new revenue
-              streams.
-            </p>
+              We automate{' '}
+              <br className="hidden sm:block" />
+              the work that{' '}
+              <span className="gradient-text">slows you down</span>
+            </motion.h1>
 
-            {/* CTA buttons */}
-            <div
-              className="hero-animate-delay-3 mt-10 flex flex-col sm:flex-row gap-4"
+            {/* Subhead */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-lg sm:text-xl text-white/50 max-w-2xl mx-auto mb-12 leading-relaxed text-pretty"
             >
-              <Button href="/book-consultation" size="lg">
-                Book a Discovery Call
-              </Button>
-              <Button href="/solutions" variant="secondary" size="lg">
-                View Our Solutions
-              </Button>
-            </div>
+              AI agents, voice AI, and enterprise automation for marketing, operations,
+              and finance teams. Save hours. Cut costs. Scale without extra hires.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+            >
+              <Link href="/book" className="btn-primary-dark text-base px-8 py-4">
+                <span>Book Free Strategy Call</span>
+                <ArrowRight size={18} />
+              </Link>
+              <Link href="/case-studies" className="btn-secondary-dark text-base px-8 py-4">
+                <span>See Our Results</span>
+                <ArrowUpRight size={18} />
+              </Link>
+            </motion.div>
+
+            {/* Feature Pills */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+              className="flex flex-wrap justify-center gap-3"
+            >
+              {[
+                { icon: Zap, text: '3-6 WEEK DEPLOYMENT' },
+                { icon: Shield, text: 'ENTERPRISE-GRADE SECURITY' },
+                { icon: Clock, text: '<4 MONTH ROI PAYBACK' },
+                { icon: TrendingUp, text: '85% CLIENTS EXPAND SCOPE' },
+              ].map((pill) => (
+                <div
+                  key={pill.text}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/[0.04] text-xs font-bold text-white/50 uppercase tracking-wide backdrop-blur-sm"
+                >
+                  <pill.icon size={14} className="text-neon-green" />
+                  {pill.text}
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
 
-        {/* Scroll indicator — pure CSS animation */}
-        <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-          style={{ animation: "hero-bounce 1.5s ease-in-out infinite" }}
-        >
-          <ChevronDown className="h-6 w-6 text-muted" />
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+          <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center pt-2">
+            <div className="w-1 h-2.5 rounded-full bg-neon-green animate-scroll-indicator" />
+          </div>
         </div>
       </section>
 
-      {/* ================================================================= */}
-      {/* 2. TRUST BAR / LOGO PARADE                                        */}
-      {/* ================================================================= */}
-      <section className="relative border-t border-b border-white/5 py-10 overflow-hidden bg-deep-space/50">
-        <p className="text-center text-sm font-medium uppercase tracking-widest text-muted mb-8">
-          Trusted by forward-thinking enterprises
-        </p>
+      {/* ==========================================
+          TRUST BAR — Clean white with scrolling logos
+          ========================================== */}
+      <section className="py-16 border-b border-card-border overflow-hidden bg-surface-warm relative texture-grain">
+        <div className="container-custom mb-8 relative z-10">
+          <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-caption">
+            Powered by the tools you trust
+          </p>
+        </div>
+        <div className="relative z-10">
+          {/* Fade edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-surface-warm to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-surface-warm to-transparent z-10" />
 
-        {/* Infinite marquee */}
-        <div className="relative w-full overflow-hidden">
-          <div className="flex animate-marquee whitespace-nowrap">
-            {[...companies, ...companies].map((name, i) => (
-              <div
-                key={i}
-                className="mx-8 flex-shrink-0 flex items-center justify-center rounded-lg bg-white/[0.03] border border-white/[0.06] px-8 py-4"
-              >
-                <span className="text-sm font-semibold text-muted tracking-wide">
-                  {name}
-                </span>
+          <div className="flex animate-marquee">
+            {[...techTools, ...techTools].map((tool, i) => (
+              <div key={`${tool.name}-${i}`} className="flex-shrink-0 mx-3">
+                <TechLogoItem tool={tool} />
               </div>
             ))}
           </div>
         </div>
-
-        {/* Inline marquee keyframes */}
-        <style jsx>{`
-          @keyframes marquee {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(-50%);
-            }
-          }
-          .animate-marquee {
-            animation: marquee 30s linear infinite;
-          }
-        `}</style>
       </section>
 
-      {/* ================================================================= */}
-      {/* 3. SOLUTIONS OVERVIEW                                              */}
-      {/* ================================================================= */}
-      <section className="py-24 lg:py-32 px-6">
-        <div className="max-w-7xl mx-auto">
+      {/* ==========================================
+          SERVICES — White section with premium cards
+          ========================================== */}
+      <section className="section-padding relative bg-surface texture-grain">
+        <div className="absolute inset-0 dot-pattern opacity-30" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-neon-green/[0.04] to-transparent rounded-full blur-3xl" />
+        <div className="container-custom relative z-10">
           <SectionHeading
-            eyebrow="Our Solutions"
-            heading="AI-Powered Solutions Engineered for Scale"
-            description="From autonomous agents to full-stack process automation, every solution is architected for measurable impact and enterprise-grade reliability."
+            badge="What We Do"
+            title="Solutions that drive"
+            titleHighlight="real outcomes"
+            description="From AI agents that think autonomously to voice systems that never sleep — we build the automation infrastructure that lets your team focus on what actually matters."
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {solutions.map((solution, index) => {
-              const IconComponent = iconMap[solution.icon] || Bot;
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {services.map((service, i) => {
+              const Icon = getIcon(service.icon);
+              const color = glowColors[i % glowColors.length];
               return (
-                <ScrollReveal key={solution.slug} delay={index * 0.1}>
-                  <Card className="h-full flex flex-col">
-                    <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-electric/10">
-                      <IconComponent className="h-6 w-6 text-electric" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-pure-white mb-3">
-                      {solution.shortTitle}
-                    </h3>
-                    <p className="text-cloud text-sm leading-relaxed flex-1">
-                      {solution.description}
-                    </p>
-                    <Link
-                      href={`/solutions/${solution.slug}`}
-                      className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-electric hover:text-cyan-pulse transition-colors"
-                    >
-                      Learn more
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Card>
-                </ScrollReveal>
+                <motion.div key={service.slug} variants={fadeInUp}>
+                  <Link href={`/services/${service.slug}`}>
+                    <GlassCard className="h-full group cursor-pointer" padding="lg" glow={color} variant="light">
+                      <div className="w-12 h-12 rounded-xl bg-neon-green/8 flex items-center justify-center mb-5 group-hover:bg-neon-green/15 transition-colors border border-neon-green/15">
+                        <Icon className="text-neon-green" size={24} />
+                      </div>
+                      <h3 className="text-xl font-bold text-heading mb-2 group-hover:text-neon-green transition-colors uppercase">
+                        {service.shortTitle}
+                      </h3>
+                      <p className="text-sm text-caption leading-relaxed mb-4">
+                        {service.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-5">
+                        {service.metrics.map((m) => (
+                          <span
+                            key={m.label}
+                            className="text-xs font-mono bg-surface-alt px-2.5 py-1 rounded-md text-body border border-card-border"
+                          >
+                            <span className="text-neon-green font-bold">{m.value}</span>{' '}
+                            {m.label}
+                          </span>
+                        ))}
+                      </div>
+                      <span className="inline-flex items-center gap-1.5 text-sm font-bold text-neon-green opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wide">
+                        Learn more <ChevronRight size={14} />
+                      </span>
+                    </GlassCard>
+                  </Link>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* ================================================================= */}
-      {/* 4. STATS SECTION                                                   */}
-      {/* ================================================================= */}
-      <section className="py-24 lg:py-32 bg-midnight">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+      {/* ==========================================
+          STATS — Clean metric cards on light bg
+          ========================================== */}
+      <section className="py-24 bg-surface-warm border-y border-card-border relative">
+        <div className="absolute inset-0 dot-pattern opacity-20" />
+        <div className="container-custom relative z-10">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-6"
+          >
             {stats.map((stat) => (
-              <div key={stat.metric} className="text-center">
-                <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-pure-white">
-                  <AnimatedCounter
-                    value={stat.value}
-                    suffix={stat.suffix}
-                    className="text-4xl sm:text-5xl lg:text-6xl font-bold text-pure-white"
-                  />
+              <motion.div
+                key={stat.label}
+                variants={scaleIn}
+                className="metric-card"
+              >
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold gradient-text mb-2 font-mono">
+                  {stat.numericValue >= 100 ? (
+                    <AnimatedCounter value={stat.numericValue} suffix={stat.suffix} />
+                  ) : stat.suffix === 'mo' ? (
+                    <>{'<'}<AnimatedCounter value={stat.numericValue} suffix={stat.suffix} /></>
+                  ) : (
+                    <AnimatedCounter value={stat.numericValue} suffix={stat.suffix} />
+                  )}
                 </div>
-                <p className="mt-2 text-sm font-semibold uppercase tracking-wider text-electric">
-                  {stat.metric}
-                </p>
-                <p className="mt-2 text-xs sm:text-sm text-muted leading-relaxed max-w-xs mx-auto">
-                  {stat.description}
-                </p>
-              </div>
+                <div className="text-sm font-bold text-heading mb-1 uppercase tracking-wide">{stat.label}</div>
+                <div className="text-xs text-caption">{stat.description}</div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* ================================================================= */}
-      {/* 5. CASE STUDY SPOTLIGHT                                            */}
-      {/* ================================================================= */}
-      <section className="py-24 lg:py-32 px-6">
-        <div className="max-w-7xl mx-auto">
+      {/* ==========================================
+          CASE STUDIES — White section with results
+          ========================================== */}
+      <section className="section-padding relative bg-surface">
+        <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-gradient-to-bl from-neon-green/[0.03] to-transparent rounded-full blur-3xl" />
+        <div className="container-custom relative z-10">
           <SectionHeading
-            eyebrow="Case Studies"
-            heading="Measurable Results, Every Engagement"
-            description="See how Aixcel Solutions delivers transformational outcomes for enterprises across industries."
+            badge="Proven Results"
+            badgeColor="green"
+            title="Real outcomes for"
+            titleHighlight="real businesses"
+            description="Every engagement starts with a clear problem and ends with measurable results. Here's how we've helped teams like yours."
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {caseStudies.map((study, index) => (
-              <ScrollReveal key={study.slug} delay={index * 0.12}>
-                <Link href={`/case-studies/${study.slug}`} className="group block h-full">
-                  <Card className="h-full flex flex-col overflow-hidden">
-                    {/* Case study image */}
-                    {caseStudyImages[study.slug] && (
-                      <div className="relative w-full h-48 -mx-6 -mt-6 sm:-mx-8 sm:-mt-8 mb-6" style={{ width: "calc(100% + 3rem)" }}>
-                        <Image
-                          src={caseStudyImages[study.slug]}
-                          alt={study.title}
-                          width={600}
-                          height={400}
-                          quality={90}
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                          className="w-full h-48 object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 to-transparent" />
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 gap-6 mb-10"
+          >
+            {caseStudies.slice(0, 4).map((cs, i) => {
+              const color = glowColors[i % glowColors.length];
+              return (
+                <motion.div key={cs.slug} variants={fadeInUp}>
+                  <Link href={`/case-studies/${cs.slug}`}>
+                    <GlassCard className="h-full group cursor-pointer" padding="lg" glow={color} variant="light">
+                      <div className="flex items-start justify-between mb-4">
+                        <span className="badge">{cs.industry}</span>
+                        <div className="text-right">
+                          <div className="text-2xl font-extrabold font-mono gradient-text">
+                            {cs.metric}
+                          </div>
+                          <div className="text-xs text-caption uppercase tracking-wide">{cs.metricLabel}</div>
+                        </div>
                       </div>
-                    )}
+                      <h3 className="text-xl font-bold text-heading mb-2 group-hover:text-neon-green transition-colors">
+                        {cs.title}
+                      </h3>
+                      <p className="text-sm text-caption leading-relaxed mb-4">
+                        {cs.subtitle}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {cs.services.map((s) => (
+                          <span
+                            key={s}
+                            className="text-xs bg-surface-alt px-2 py-0.5 rounded border border-card-border text-body"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                      {cs.testimonial && (
+                        <blockquote className="text-sm text-caption italic border-l-2 border-neon-green/30 pl-4">
+                          &ldquo;{cs.testimonial.quote.substring(0, 100)}...&rdquo;
+                          <br />
+                          <span className="text-xs text-caption/80 not-italic">
+                            — {cs.testimonial.author}, {cs.testimonial.role}
+                          </span>
+                        </blockquote>
+                      )}
+                    </GlassCard>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </motion.div>
 
-                    {/* Industry badge */}
-                    <span className="inline-block self-start mb-4 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-electric/10 text-electric border border-electric/20">
-                      {study.industry}
-                    </span>
+          <div className="text-center">
+            <Link href="/case-studies" className="btn-secondary">
+              <span>View All Case Studies</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
 
-                    {/* Headline metric */}
-                    <p className="text-3xl sm:text-4xl font-bold gradient-text mb-2">
-                      {study.results[0].value}
-                    </p>
-                    <p className="text-xs text-cloud mb-3">
-                      {study.results[0].description}
-                    </p>
+      {/* ==========================================
+          PROCESS — Light alt background
+          ========================================== */}
+      <section className="section-padding bg-surface-alt border-y border-card-border relative">
+        <div className="absolute inset-0 grid-pattern opacity-60" />
+        <div className="container-custom relative z-10">
+          <SectionHeading
+            badge="How It Works"
+            badgeColor="cyan"
+            title="From discovery to"
+            titleHighlight="deployed in weeks"
+            description="Our proven 4-step process ensures you see real results fast — not months of planning without action."
+          />
 
-                    {/* Title */}
-                    <h3 className="text-lg font-semibold text-pure-white leading-snug mb-2 line-clamp-2 flex-1">
-                      {study.title}
-                    </h3>
-
-                    {/* Client name */}
-                    <p className="text-sm text-muted mb-4">{study.client}</p>
-
-                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-electric group-hover:text-cyan-pulse transition-colors">
-                      Read Case Study
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </span>
-                  </Card>
-                </Link>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {processSteps.map((step, i) => (
+              <ScrollReveal key={step.number} delay={i * 0.15}>
+                <div className="rounded-2xl border border-card-border bg-surface-card p-6 h-full hover:border-neon-green/40 hover:shadow-[0_20px_60px_rgba(0,200,83,0.08)] transition-all duration-400 group">
+                  <div className="text-6xl font-extrabold font-mono text-neon-green/10 mb-4 group-hover:text-neon-green/20 transition-colors">
+                    {step.number}
+                  </div>
+                  <span className="text-xs font-mono text-neon-green font-bold mb-2 block uppercase tracking-wider">
+                    {step.duration}
+                  </span>
+                  <h3 className="text-xl font-bold text-heading mb-3 uppercase">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-caption leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
               </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ================================================================= */}
-      {/* 6. PROCESS PREVIEW                                                 */}
-      {/* ================================================================= */}
-      <section className="py-24 lg:py-32 px-6 bg-midnight/50">
-        <div className="max-w-7xl mx-auto">
+      {/* ==========================================
+          TESTIMONIALS — White section, premium feel
+          ========================================== */}
+      <section className="section-padding relative bg-surface">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-electric/[0.03] to-transparent rounded-full blur-3xl" />
+        <div className="container-custom relative z-10">
           <SectionHeading
-            eyebrow="Our Process"
-            heading="From Discovery to Deployment in Weeks"
-            description="A proven four-phase methodology that minimizes risk and maximizes speed-to-value."
+            badge="Client Love"
+            title="Trusted by teams that"
+            titleHighlight="demand results"
           />
 
-          <div className="relative">
-            {/* Connecting line (desktop only) */}
-            <div className="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-electric/50 via-cyan-pulse/50 to-emerald/50" />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
-              {processSteps.map((step, index) => {
-                const StepIcon = step.icon;
-                return (
-                  <ScrollReveal key={step.title} delay={index * 0.12}>
-                    <div className="relative flex flex-col items-center text-center">
-                      {/* Number badge */}
-                      <div className="relative z-10 mb-4">
-                        <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-electric to-cyan-pulse flex items-center justify-center shadow-lg shadow-electric/20">
-                          <StepIcon className="h-6 w-6 text-white" />
-                        </div>
-                        <span className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-deep-space border-2 border-electric flex items-center justify-center text-xs font-bold text-pure-white">
-                          {index + 1}
-                        </span>
-                      </div>
-
-                      <h3 className="text-lg font-semibold text-pure-white mb-2">
-                        {step.title}
-                      </h3>
-                      <p className="text-sm text-cloud leading-relaxed max-w-xs">
-                        {step.description}
-                      </p>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {testimonials.slice(0, 3).map((t, i) => {
+              const color = glowColors[i % glowColors.length];
+              return (
+                <motion.div key={i} variants={fadeInUp}>
+                  <GlassCard padding="lg" className="h-full flex flex-col" glow={color} variant="light">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, j) => (
+                        <Star
+                          key={j}
+                          size={16}
+                          className="text-amber fill-amber"
+                        />
+                      ))}
                     </div>
-                  </ScrollReveal>
-                );
-              })}
-            </div>
-          </div>
+                    <blockquote className="text-sm text-body leading-relaxed mb-6 flex-1">
+                      &ldquo;{t.quote}&rdquo;
+                    </blockquote>
+                    <div className="flex items-center gap-3 pt-4 border-t border-card-border">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-neon-green to-neon-lime flex items-center justify-center text-heading font-extrabold text-sm">
+                        {t.author[0]}
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold text-heading">
+                          {t.author}
+                        </div>
+                        <div className="text-xs text-caption">
+                          {t.role}, {t.company}
+                        </div>
+                      </div>
+                    </div>
+                  </GlassCard>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
+      </section>
 
-          <ScrollReveal delay={0.5}>
-            <div className="mt-14 text-center">
-              <Link
-                href="/process"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-electric hover:text-cyan-pulse transition-colors"
-              >
-                Learn more about our process
-                <ArrowRight className="h-4 w-4" />
+      {/* ==========================================
+          WHY AIXCEL — Alt background differentiators
+          ========================================== */}
+      <section className="section-padding bg-surface-alt border-y border-card-border relative">
+        <div className="absolute inset-0 dot-pattern opacity-20" />
+        <div className="container-custom relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <ScrollReveal>
+              <span className="badge-green mb-4 inline-block">Why AiXCEL</span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-heading leading-tight mb-6 uppercase">
+                Not another dev shop.{' '}
+                <span className="gradient-text">Your automation partner.</span>
+              </h2>
+              <p className="text-lg text-caption leading-relaxed mb-8">
+                We don&apos;t just build automations and walk away. We embed into your
+                operations, measure real impact, and continuously optimize for better
+                results.
+              </p>
+              <div className="space-y-4">
+                {[
+                  'Results-first: Every project starts with clear ROI targets',
+                  'Speed: See working automations in 2-3 weeks, not months',
+                  'Full ownership: You own everything we build — zero lock-in',
+                  'Continuous optimization: We monitor and improve post-launch',
+                  '85% of clients expand to additional automation projects',
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3">
+                    <CheckCircle2
+                      size={18}
+                      className="text-neon-green mt-0.5 flex-shrink-0"
+                    />
+                    <span className="text-sm text-body">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.2}>
+              <div className="grid grid-cols-2 gap-5">
+                {[
+                  { value: '48hr', label: 'Strategy Delivery', icon: Clock, color: 'from-neon-green/10 to-neon-green/5' },
+                  { value: '2-3wk', label: 'First Results', icon: Zap, color: 'from-neon-pink/10 to-neon-pink/5' },
+                  { value: '<4mo', label: 'ROI Payback', icon: TrendingUp, color: 'from-amber/10 to-amber/5' },
+                  { value: '85%', label: 'Client Retention', icon: Shield, color: 'from-violet/10 to-violet/5' },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className="rounded-2xl border border-card-border bg-surface-card p-6 text-center hover:border-neon-green/30 hover:shadow-[0_20px_60px_rgba(0,200,83,0.08)] transition-all duration-400 group"
+                  >
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mx-auto mb-3`}>
+                      <item.icon size={22} className="text-neon-green" />
+                    </div>
+                    <div className="text-2xl font-extrabold font-mono gradient-text mb-1">
+                      {item.value}
+                    </div>
+                    <div className="text-xs text-caption uppercase tracking-wide font-bold">{item.label}</div>
+                  </div>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ==========================================
+          FINAL CTA — Dark section for contrast
+          ========================================== */}
+      <section className="section-padding relative overflow-hidden bg-[#0A0A0A]">
+        <div className="absolute inset-0 dot-pattern-dark opacity-20" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-b from-neon-green/5 to-transparent rounded-full blur-3xl" />
+
+        <div className="container-custom relative z-10 text-center">
+          <ScrollReveal>
+            <Sparkles className="mx-auto text-neon-green mb-6" size={32} />
+            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold text-white leading-tight mb-6 max-w-4xl mx-auto uppercase">
+              Stop doing work a machine{' '}
+              <span className="gradient-text">should handle</span>
+            </h2>
+            <p className="text-lg text-white/50 mb-10 max-w-xl mx-auto">
+              Book a free strategy session. We&apos;ll identify your highest-ROI
+              automation opportunities and deliver a roadmap in 48 hours.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/book" className="btn-primary-dark text-base px-8 py-4">
+                <span>Book Free Strategy Call</span>
+                <ArrowRight size={18} />
+              </Link>
+              <Link href="/pricing" className="btn-secondary-dark text-base px-8 py-4">
+                <span>View Pricing</span>
+                <ArrowUpRight size={18} />
               </Link>
             </div>
           </ScrollReveal>
         </div>
-      </section>
-
-      {/* ================================================================= */}
-      {/* 7. TESTIMONIALS SECTION                                            */}
-      {/* ================================================================= */}
-      <section className="py-24 lg:py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeading
-            eyebrow="Client Testimonials"
-            heading="What Our Partners Say"
-            description="Hear directly from the enterprises we've helped transform with intelligent automation."
-          />
-
-          <div className="relative max-w-3xl mx-auto">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentTestimonial}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] as const }}
-                className="text-center"
-              >
-                {/* Stars */}
-                <div className="flex items-center justify-center gap-1 mb-6">
-                  {Array.from({ length: testimonials[currentTestimonial].rating }).map(
-                    (_, i) => (
-                      <Star
-                        key={i}
-                        className="h-5 w-5 fill-yellow-400 text-yellow-400"
-                      />
-                    ),
-                  )}
-                </div>
-
-                {/* Quote */}
-                <blockquote className="text-lg sm:text-xl text-cloud leading-relaxed italic">
-                  &ldquo;{testimonials[currentTestimonial].content}&rdquo;
-                </blockquote>
-
-                {/* Attribution */}
-                <div className="mt-8">
-                  <p className="text-base font-semibold text-pure-white">
-                    {testimonials[currentTestimonial].name}
-                  </p>
-                  <p className="text-sm text-muted">
-                    {testimonials[currentTestimonial].role},{" "}
-                    {testimonials[currentTestimonial].company}
-                  </p>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Navigation arrows */}
-            <button
-              onClick={prevTestimonial}
-              aria-label="Previous testimonial"
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-16 h-10 w-10 rounded-full border border-white/10 bg-steel/50 backdrop-blur flex items-center justify-center text-cloud hover:text-pure-white hover:border-electric/50 transition-colors cursor-pointer"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              onClick={nextTestimonial}
-              aria-label="Next testimonial"
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-16 h-10 w-10 rounded-full border border-white/10 bg-steel/50 backdrop-blur flex items-center justify-center text-cloud hover:text-pure-white hover:border-electric/50 transition-colors cursor-pointer"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-
-            {/* Dots */}
-            <div className="flex items-center justify-center gap-2 mt-10">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentTestimonial(i)}
-                  aria-label={`Go to testimonial ${i + 1}`}
-                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    i === currentTestimonial
-                      ? "w-8 bg-electric"
-                      : "w-2.5 bg-white/20 hover:bg-white/40"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ================================================================= */}
-      {/* 8. FINAL CTA SECTION                                               */}
-      {/* ================================================================= */}
-      <section className="relative py-24 lg:py-32 px-6 bg-gradient-to-br from-electric/10 via-deep-space to-cyan-pulse/5 overflow-hidden">
-        {/* CTA background image */}
-        <Image
-          src="/images/backgrounds/cta-bg.png"
-          alt=""
-          fill
-          quality={85}
-          className="absolute inset-0 object-cover opacity-30 pointer-events-none"
-        />
-
-        <ScrollReveal>
-          <div className="relative z-10 max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-pure-white leading-tight">
-              Ready to Transform Your Operations with AI?
-            </h2>
-            <p className="mt-6 text-lg text-cloud leading-relaxed">
-              Schedule a complimentary 30-minute AI strategy session with our
-              team.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button href="/book-consultation" size="lg">
-                Book Your Free Consultation
-              </Button>
-            </div>
-            <Link
-              href="/solutions"
-              className="inline-flex items-center gap-1.5 mt-6 text-sm text-muted hover:text-cloud transition-colors"
-            >
-              Or explore our solutions first
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </ScrollReveal>
       </section>
     </>
   );

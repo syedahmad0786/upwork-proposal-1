@@ -1,12 +1,11 @@
-import type { Metadata } from "next";
-import IndustriesPageClient from "./IndustriesPageClient";
+import type { Metadata } from 'next';
+import IndustriesClient from './IndustriesClient';
 
 export const metadata: Metadata = {
-  title: "Industries We Serve",
-  description:
-    "AI automation solutions tailored for financial services, healthcare, manufacturing, e-commerce, technology, and professional services.",
+  title: 'Industries',
+  description: 'AI automation solutions for Healthcare, E-Commerce, Professional Services, Real Estate, SaaS, and Manufacturing. 100+ deployments across industries.',
 };
 
 export default function IndustriesPage() {
-  return <IndustriesPageClient />;
+  return <IndustriesClient />;
 }

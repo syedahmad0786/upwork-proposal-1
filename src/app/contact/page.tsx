@@ -1,12 +1,11 @@
-import type { Metadata } from "next";
-import ContactPageClient from "./ContactPageClient";
+import type { Metadata } from 'next';
+import ContactClient from './ContactClient';
 
 export const metadata: Metadata = {
-  title: "Contact Us",
-  description:
-    "Get in touch with Aixcel Solutions. Schedule a consultation or send us a message about your AI automation needs.",
+  title: 'Contact',
+  description: 'Get in touch with AiXCEL Solutions. Email, WhatsApp, or book a free strategy call. We respond within 4 hours.',
 };
 
 export default function ContactPage() {
-  return <ContactPageClient />;
+  return <ContactClient />;
 }
