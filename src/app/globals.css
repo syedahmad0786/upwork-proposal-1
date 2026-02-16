@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 /* ============================================
-   AIXCEL SOLUTIONS — Design System v4
-   Theme: "Premium White" — Light + Refined + 3D
+   AIXCEL SOLUTIONS — Design System v5
+   Theme: "Premium White" — Electric Blue + Cyan
    ============================================ */
 
 @theme {
-  /* === BRAND COLORS === */
+  /* === BRAND COLORS (Blue-Cyan System) === */
   --color-void: #000000;
   --color-deep: #0A0A0A;
   --color-abyss: #111111;
@@ -21,13 +21,13 @@
   --color-surface-card: #FFFFFF;
   --color-surface-dark: #111111;
 
-  /* === NEON ACCENTS === */
-  --color-electric: #3B82F6;
-  --color-electric-light: #60A5FA;
-  --color-cyan: #06B6D4;
-  --color-cyan-light: #22D3EE;
-  --color-neon-green: #00C853;
-  --color-neon-lime: #76FF03;
+  /* === PRIMARY ACCENT: Electric Blue → Cyan === */
+  --color-electric: #2563EB;
+  --color-electric-light: #3B82F6;
+  --color-cyan: #0891B2;
+  --color-cyan-light: #06B6D4;
+
+  /* === SECONDARY ACCENTS === */
   --color-neon-pink: #E91E63;
   --color-neon-pink-hot: #FF1744;
   --color-amber: #FF9100;
@@ -81,7 +81,7 @@ body {
 }
 
 ::selection {
-  background-color: rgba(0, 200, 83, 0.15);
+  background-color: rgba(37, 99, 235, 0.15);
   color: var(--color-heading);
 }
 
@@ -100,7 +100,7 @@ body {
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-neon-green);
+  background: var(--color-electric);
 }
 
 /* ============================================
@@ -143,12 +143,12 @@ body {
 }
 
 .premium-card:hover {
-  border-color: var(--color-neon-green);
-  box-shadow: 0 24px 80px rgba(0, 200, 83, 0.08), 0 4px 24px rgba(0, 0, 0, 0.06);
+  border-color: var(--color-electric);
+  box-shadow: 0 24px 80px rgba(37, 99, 235, 0.1), 0 4px 24px rgba(0, 0, 0, 0.06);
   transform: translateY(-6px);
 }
 
-/* Dark section card (for dark sections) */
+/* Dark section card */
 .dark-card {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -158,18 +158,18 @@ body {
 }
 
 .dark-card:hover {
-  border-color: rgba(0, 200, 83, 0.4);
+  border-color: rgba(37, 99, 235, 0.4);
   background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 24px 80px rgba(0, 200, 83, 0.1);
+  box-shadow: 0 24px 80px rgba(37, 99, 235, 0.12);
   transform: translateY(-4px);
 }
 
 /* ============================================
-   GRADIENT TEXTS
+   GRADIENT TEXTS — Blue-Cyan System
    ============================================ */
 
 .gradient-text {
-  background: linear-gradient(135deg, #00C853 0%, #00E676 50%, #76FF03 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #0891B2 50%, #06B6D4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -183,21 +183,21 @@ body {
 }
 
 .gradient-text-electric {
-  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.gradient-text-pink {
-  background: linear-gradient(135deg, #E91E63 0%, #FF1744 100%);
+.gradient-text-cyan {
+  background: linear-gradient(135deg, #0891B2 0%, #22D3EE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* ============================================
-   BUTTONS — Premium, refined
+   BUTTONS — Electric Blue System
    ============================================ */
 
 .btn-primary {
@@ -218,9 +218,9 @@ body {
   overflow: hidden;
 }
 .btn-primary:hover {
-  background: var(--color-neon-green);
-  color: var(--color-heading);
-  box-shadow: 0 8px 32px rgba(0, 200, 83, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--color-electric);
+  color: white;
+  box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
 .btn-primary:active {
@@ -243,32 +243,33 @@ body {
   transition: all 0.3s var(--ease-out-expo);
 }
 .btn-secondary:hover {
-  border-color: var(--color-heading);
-  background: var(--color-surface-alt);
+  border-color: var(--color-electric);
+  color: var(--color-electric);
+  background: rgba(37, 99, 235, 0.04);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
 }
 
-/* Dark-mode button variants (for dark sections) */
+/* Dark-mode button variants */
 .btn-primary-dark {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  background: var(--color-neon-green);
-  color: var(--color-heading);
+  background: linear-gradient(135deg, var(--color-electric) 0%, var(--color-cyan) 100%);
+  color: white;
   font-weight: 600;
   font-size: 0.875rem;
   letter-spacing: 0.01em;
   border-radius: 14px;
   border: none;
-  box-shadow: 0 4px 20px rgba(0, 200, 83, 0.3);
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
   transition: all 0.3s var(--ease-out-expo);
   overflow: hidden;
 }
 .btn-primary-dark:hover {
-  box-shadow: 0 8px 40px rgba(0, 200, 83, 0.4);
+  box-shadow: 0 8px 40px rgba(37, 99, 235, 0.45);
   transform: translateY(-2px);
 }
 
@@ -287,13 +288,13 @@ body {
   transition: all 0.3s var(--ease-out-expo);
 }
 .btn-secondary-dark:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(37, 99, 235, 0.5);
+  background: rgba(37, 99, 235, 0.1);
   transform: translateY(-2px);
 }
 
 /* ============================================
-   BACKGROUNDS & PATTERNS — Textured white
+   BACKGROUNDS & PATTERNS
    ============================================ */
 
 .dot-pattern {
@@ -325,7 +326,7 @@ body {
   z-index: 1;
 }
 
-/* Subtle texture overlay for white sections */
+/* Subtle texture for white sections */
 .texture-grain::before {
   content: '';
   position: absolute;
@@ -337,11 +338,11 @@ body {
 }
 
 .radial-glow {
-  background: radial-gradient(ellipse 600px 400px at 50% 0%, rgba(0, 200, 83, 0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse 600px 400px at 50% 0%, rgba(37, 99, 235, 0.06) 0%, transparent 70%);
 }
 
 .radial-glow-cyan {
-  background: radial-gradient(ellipse 600px 400px at 50% 0%, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
+  background: radial-gradient(ellipse 600px 400px at 50% 0%, rgba(8, 145, 178, 0.05) 0%, transparent 70%);
 }
 
 /* ============================================
@@ -374,13 +375,14 @@ body {
 }
 
 /* ============================================
-   GLOW EFFECTS — Refined & subtle
+   GLOW EFFECTS
    ============================================ */
 
-.glow-green { box-shadow: 0 0 60px rgba(0, 200, 83, 0.1); }
+.glow-blue { box-shadow: 0 0 60px rgba(37, 99, 235, 0.1); }
+.glow-cyan { box-shadow: 0 0 60px rgba(8, 145, 178, 0.1); }
 .glow-pink { box-shadow: 0 0 60px rgba(233, 30, 99, 0.1); }
-.glow-blue { box-shadow: 0 0 60px rgba(59, 130, 246, 0.08); }
-.glow-cyan { box-shadow: 0 0 60px rgba(6, 182, 212, 0.08); }
+.glow-amber { box-shadow: 0 0 60px rgba(255, 145, 0, 0.1); }
+.glow-violet { box-shadow: 0 0 60px rgba(124, 58, 237, 0.1); }
 
 .border-glow {
   position: relative;
@@ -391,7 +393,7 @@ body {
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(0, 200, 83, 0.3), rgba(59, 130, 246, 0.3), rgba(124, 58, 237, 0.3));
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(8, 145, 178, 0.3), rgba(124, 58, 237, 0.3));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -399,7 +401,7 @@ body {
 }
 
 /* ============================================
-   ANIMATIONS
+   KEYFRAME ANIMATIONS
    ============================================ */
 
 @keyframes float {
@@ -443,6 +445,23 @@ body {
   100% { opacity: 0; transform: translateY(12px); }
 }
 
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.15); }
+  50% { box-shadow: 0 0 40px rgba(37, 99, 235, 0.3); }
+}
+
+@keyframes border-flow {
+  0% { border-color: rgba(37, 99, 235, 0.3); }
+  33% { border-color: rgba(8, 145, 178, 0.3); }
+  66% { border-color: rgba(124, 58, 237, 0.3); }
+  100% { border-color: rgba(37, 99, 235, 0.3); }
+}
+
+@keyframes scale-subtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
 .animate-marquee { animation: marquee 40s linear infinite; }
@@ -457,9 +476,12 @@ body {
 }
 .animate-spin-slow { animation: spin-slow 20s linear infinite; }
 .animate-scroll-indicator { animation: scroll-indicator 2.5s ease-in-out infinite; }
+.animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+.animate-border-flow { animation: border-flow 4s ease-in-out infinite; }
+.animate-scale-subtle { animation: scale-subtle 4s ease-in-out infinite; }
 
 /* ============================================
-   BADGE / TAG STYLES — Refined
+   BADGE / TAG STYLES — Blue-Cyan System
    ============================================ */
 
 .badge {
@@ -472,15 +494,21 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   border-radius: 9999px;
-  background: rgba(0, 200, 83, 0.08);
-  border: 1px solid rgba(0, 200, 83, 0.2);
-  color: #00913D;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  color: #1D4ED8;
 }
 
 .badge-green {
-  background: rgba(0, 200, 83, 0.08);
-  border: 1px solid rgba(0, 200, 83, 0.2);
-  color: #00913D;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  color: #1D4ED8;
+}
+
+.badge-cyan {
+  background: rgba(8, 145, 178, 0.08);
+  border: 1px solid rgba(8, 145, 178, 0.2);
+  color: #0E7490;
 }
 
 .badge-pink {
@@ -505,9 +533,9 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   border-radius: 9999px;
-  background: rgba(0, 200, 83, 0.12);
-  border: 1px solid rgba(0, 200, 83, 0.3);
-  color: #00E676;
+  background: rgba(37, 99, 235, 0.15);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  color: #60A5FA;
 }
 
 /* ============================================
@@ -524,9 +552,9 @@ body {
   transition: all 0.4s var(--ease-out-expo);
 }
 .metric-card:hover {
-  border-color: var(--color-neon-green);
+  border-color: var(--color-electric);
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 200, 83, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.1), 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 /* ============================================

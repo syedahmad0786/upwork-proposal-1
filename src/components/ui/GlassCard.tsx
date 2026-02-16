@@ -35,7 +35,7 @@ export default function GlassCard({
   className = '',
   hover = true,
   padding = 'md',
-  glow = 'green',
+  glow = 'electric',
   variant = 'light',
 }: GlassCardProps) {
   const isLight = variant === 'light';
@@ -49,8 +49,8 @@ export default function GlassCard({
         isLight
           ? 'border border-card-border bg-surface-card shadow-[0_1px_3px_rgba(0,0,0,0.04)]'
           : 'border border-white/10 bg-white/[0.06] backdrop-blur-xl',
-        hover && isLight && 'hover:border-neon-green/30',
-        hover && !isLight && 'hover:border-neon-green/40 hover:bg-white/10',
+        hover && isLight && 'hover:border-electric/30',
+        hover && !isLight && 'hover:border-electric/40 hover:bg-white/10',
         glowMap[glow],
         paddingMap[padding],
         className

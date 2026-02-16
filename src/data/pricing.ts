@@ -92,7 +92,7 @@ export const pricingTiers: PricingTier[] = [
     ],
     cta: 'Scale My Content',
     ctaLink: '/book',
-    color: 'neon-green',
+    color: 'electric',
   },
   {
     name: 'Enterprise / Custom',

@@ -3,6 +3,7 @@ import { Poppins, Anonymous_Pro } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import ScrollProgressWrapper from '@/components/ui/ScrollProgressWrapper';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -70,6 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} ${anonymousPro.variable}`}>
       <body className="font-sans antialiased">
+        <ScrollProgressWrapper />
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />

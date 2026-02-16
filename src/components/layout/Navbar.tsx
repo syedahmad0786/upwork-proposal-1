@@ -53,7 +53,7 @@ export default function Navbar() {
               className="group-hover:scale-105 transition-transform"
             />
             <span className={`text-xl font-bold tracking-tight uppercase transition-colors ${
-              isHome && !scrolled ? 'text-white group-hover:text-neon-green' : 'text-heading group-hover:text-neon-green'
+              isHome && !scrolled ? 'text-white group-hover:text-electric' : 'text-heading group-hover:text-electric'
             }`}>
               AiXCEL
             </span>
@@ -72,7 +72,7 @@ export default function Navbar() {
                   href={link.href}
                   className={`flex items-center gap-1 px-4 py-2 text-sm font-semibold uppercase tracking-wide rounded-lg transition-colors ${
                     pathname === link.href || pathname.startsWith(link.href + '/')
-                      ? 'text-neon-green'
+                      ? 'text-electric'
                       : isHome && !scrolled
                         ? 'text-white/80 hover:text-white'
                         : 'text-body hover:text-heading'
@@ -109,11 +109,11 @@ export default function Navbar() {
                                 href={item.href}
                                 className="flex items-start gap-3 p-3 rounded-xl hover:bg-surface-alt transition-colors group/item"
                               >
-                                <div className="w-10 h-10 rounded-lg bg-neon-green/10 flex items-center justify-center flex-shrink-0 group-hover/item:bg-neon-green/20 transition-colors">
-                                  <Icon className="text-neon-green" size={20} />
+                                <div className="w-10 h-10 rounded-lg bg-electric/10 flex items-center justify-center flex-shrink-0 group-hover/item:bg-electric/20 transition-colors">
+                                  <Icon className="text-electric" size={20} />
                                 </div>
                                 <div>
-                                  <div className="text-sm font-bold text-heading group-hover/item:text-neon-green transition-colors">
+                                  <div className="text-sm font-bold text-heading group-hover/item:text-electric transition-colors">
                                     {item.title}
                                   </div>
                                   <div className="text-xs text-caption mt-0.5 leading-relaxed">
@@ -200,7 +200,7 @@ export default function Navbar() {
                               <Link
                                 key={item.href}
                                 href={item.href}
-                                className="block py-2.5 px-4 text-sm text-caption hover:text-neon-green transition-colors"
+                                className="block py-2.5 px-4 text-sm text-caption hover:text-electric transition-colors"
                               >
                                 {item.title}
                               </Link>
@@ -214,7 +214,7 @@ export default function Navbar() {
                       href={link.href}
                       className={`block py-3 px-4 text-base font-semibold rounded-lg transition-colors uppercase tracking-wide ${
                         pathname === link.href
-                          ? 'text-neon-green bg-neon-green/5'
+                          ? 'text-electric bg-electric/5'
                           : 'text-body hover:text-heading hover:bg-surface-alt'
                       }`}
                     >

@@ -194,7 +194,7 @@ export const techTools: TechTool[] = [
 export function TechLogoItem({ tool }: { tool: TechTool }) {
   const IconComponent = tool.icon;
   return (
-    <div className="flex items-center gap-3 px-5 py-3 rounded-xl border border-card-border bg-surface-card hover:border-neon-green/40 hover:shadow-lg transition-all duration-300 flex-shrink-0">
+    <div className="flex items-center gap-3 px-5 py-3 rounded-xl border border-card-border bg-surface-card hover:border-electric/40 hover:shadow-lg transition-all duration-300 flex-shrink-0">
       {IconComponent && <IconComponent size={20} />}
       <span className="text-sm font-semibold text-heading whitespace-nowrap">{tool.name}</span>
     </div>

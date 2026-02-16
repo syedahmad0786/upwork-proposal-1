@@ -149,7 +149,7 @@ export const caseStudies: CaseStudy[] = [
       role: 'Managing Partner',
     },
     image: '/images/case-studies/onboarding-flow.png',
-    color: 'neon-green',
+    color: 'electric',
   },
 ];
 

@@ -14,7 +14,6 @@ const colorMap: Record<string, string> = {
   electric: 'from-electric/20 to-electric/0 border-electric/30',
   cyan: 'from-cyan/20 to-cyan/0 border-cyan/30',
   violet: 'from-violet/20 to-violet/0 border-violet/30',
-  'neon-green': 'from-neon-green/20 to-neon-green/0 border-neon-green/30',
   amber: 'from-amber/20 to-amber/0 border-amber/30',
 };
 
@@ -23,7 +22,6 @@ const textColorMap: Record<string, string> = {
   electric: 'text-electric',
   cyan: 'text-cyan',
   violet: 'text-violet',
-  'neon-green': 'text-neon-green',
   amber: 'text-amber',
 };
 
@@ -33,7 +31,7 @@ export default function PricingClient() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 grid-pattern opacity-30" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-neon-green/8 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-electric/8 to-transparent rounded-full blur-3xl" />
         <div className="container-custom relative z-10 text-center max-w-3xl mx-auto">
           <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="badge mb-4 inline-block">Transparent Pricing</motion.span>
           <motion.h1
@@ -90,7 +88,7 @@ export default function PricingClient() {
                     <div className="space-y-3 mb-8 flex-1">
                       {tier.features.map((f) => (
                         <div key={f} className="flex items-start gap-3">
-                          <CheckCircle2 size={16} className="text-neon-green mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 size={16} className="text-electric mt-0.5 flex-shrink-0" />
                           <span className="text-sm text-cloud">{f}</span>
                         </div>
                       ))}

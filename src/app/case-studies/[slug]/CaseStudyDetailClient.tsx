@@ -73,7 +73,7 @@ export default function CaseStudyDetailClient({ caseStudy: cs }: Props) {
                 <div className="space-y-3">
                   {cs.results.map((r) => (
                     <div key={r} className="flex items-start gap-3">
-                      <CheckCircle2 size={18} className="text-neon-green mt-0.5 flex-shrink-0" />
+                      <CheckCircle2 size={18} className="text-electric mt-0.5 flex-shrink-0" />
                       <span className="text-cloud">{r}</span>
                     </div>
                   ))}

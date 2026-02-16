@@ -121,7 +121,7 @@ export default function ContactClient() {
               </motion.div>
 
               <ScrollReveal delay={0.3}>
-                <div className="mt-8 p-6 rounded-2xl border border-neon-green/20 bg-neon-green/5">
+                <div className="mt-8 p-6 rounded-2xl border border-electric/20 bg-electric/5">
                   <h3 className="text-white font-bold mb-2">Prefer a live conversation?</h3>
                   <p className="text-sm text-muted mb-4">Book a free 60-minute strategy call and get a custom automation roadmap within 48 hours.</p>
                   <Link href="/book" className="btn-primary text-sm">
@@ -137,8 +137,8 @@ export default function ContactClient() {
               <GlassCard padding="lg">
                 {submitted ? (
                   <div className="text-center py-12">
-                    <div className="w-16 h-16 rounded-full bg-neon-green/10 flex items-center justify-center mx-auto mb-4">
-                      <Send size={24} className="text-neon-green" />
+                    <div className="w-16 h-16 rounded-full bg-electric/10 flex items-center justify-center mx-auto mb-4">
+                      <Send size={24} className="text-electric" />
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-2">Message sent!</h3>
                     <p className="text-muted">I&apos;ll get back to you within 4 hours during business hours.</p>

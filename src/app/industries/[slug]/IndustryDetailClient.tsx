@@ -16,7 +16,6 @@ const colorTextMap: Record<string, string> = {
   electric: 'text-electric',
   cyan: 'text-cyan',
   violet: 'text-violet',
-  'neon-green': 'text-neon-green',
   amber: 'text-amber',
 };
 
@@ -25,7 +24,6 @@ const colorBgMap: Record<string, string> = {
   electric: 'bg-electric/10',
   cyan: 'bg-cyan/10',
   violet: 'bg-violet/10',
-  'neon-green': 'bg-neon-green/10',
   amber: 'bg-amber/10',
 };
 
@@ -107,13 +105,13 @@ export default function IndustryDetailClient({ industry }: { industry: Industry 
             <ScrollReveal delay={0.1}>
               <GlassCard padding="lg" glow="green">
                 <div className="flex items-center gap-3 mb-6">
-                  <Lightbulb size={20} className="text-neon-green" />
+                  <Lightbulb size={20} className="text-electric" />
                   <h2 className="text-xl font-bold text-white">Our Solutions</h2>
                 </div>
                 <div className="space-y-4">
                   {industry.solutions.map((s) => (
                     <div key={s} className="flex items-start gap-3">
-                      <CheckCircle2 size={16} className="text-neon-green mt-0.5 flex-shrink-0" />
+                      <CheckCircle2 size={16} className="text-electric mt-0.5 flex-shrink-0" />
                       <span className="text-cloud">{s}</span>
                     </div>
                   ))}

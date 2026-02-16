@@ -122,7 +122,7 @@ export const services: Service[] = [
     longDescription:
       'We design and implement automation architectures using n8n, Make, and Zapier that connect hundreds of apps into unified workflows. From simple task automation to complex multi-step processes with conditional logic and error handling.',
     icon: 'Workflow',
-    color: 'neon-green',
+    color: 'electric',
     metrics: [
       { value: '6hrs', label: 'Saved per process daily' },
       { value: '100+', label: 'Automations deployed' },

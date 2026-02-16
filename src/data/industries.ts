@@ -116,7 +116,7 @@ export const industries: Industry[] = [
     title: 'SaaS & Technology',
     description: 'Accelerate SaaS growth with automated onboarding, churn prediction, support automation, and data-driven product insights.',
     icon: 'Cloud',
-    color: 'neon-green',
+    color: 'electric',
     challenges: [
       'User onboarding drop-off rates',
       'Reactive rather than proactive churn management',

@@ -86,7 +86,7 @@ export default function ProcessClient() {
                       <div className="space-y-3">
                         {step.details.map((d) => (
                           <div key={d} className="flex items-start gap-3">
-                            <CheckCircle2 size={16} className="text-neon-green mt-0.5 flex-shrink-0" />
+                            <CheckCircle2 size={16} className="text-electric mt-0.5 flex-shrink-0" />
                             <span className="text-sm text-cloud">{d}</span>
                           </div>
                         ))}

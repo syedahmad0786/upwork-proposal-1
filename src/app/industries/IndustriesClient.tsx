@@ -15,7 +15,6 @@ const colorTextMap: Record<string, string> = {
   electric: 'text-electric',
   cyan: 'text-cyan',
   violet: 'text-violet',
-  'neon-green': 'text-neon-green',
   amber: 'text-amber',
 };
 

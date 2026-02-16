@@ -40,7 +40,7 @@ function FloatingTorus() {
           distortionScale={0.5}
           temporalDistortion={0.1}
           ior={1.25}
-          color="#00C853"
+          color="#3B82F6"
           roughness={0}
           transmission={0.98}
         />
@@ -148,7 +148,7 @@ function ParticleField() {
     <points ref={ref} geometry={geometry}>
       <pointsMaterial
         size={0.03}
-        color="#00C853"
+        color="#2563EB"
         transparent
         opacity={0.5}
         sizeAttenuation
@@ -163,7 +163,7 @@ function Lights() {
     <>
       <ambientLight intensity={0.4} />
       <directionalLight position={[5, 5, 5]} intensity={0.8} color="#ffffff" />
-      <pointLight position={[-4, 3, -2]} intensity={0.6} color="#00C853" />
+      <pointLight position={[-4, 3, -2]} intensity={0.6} color="#2563EB" />
       <pointLight position={[4, -2, 3]} intensity={0.4} color="#3B82F6" />
     </>
   );

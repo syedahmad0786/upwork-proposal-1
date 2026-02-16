@@ -106,7 +106,7 @@ export default function ServiceDetailClient({ service }: Props) {
               <div className="space-y-4">
                 {service.features.map((feature) => (
                   <div key={feature} className="flex items-start gap-3">
-                    <CheckCircle2 size={18} className="text-neon-green mt-0.5 flex-shrink-0" />
+                    <CheckCircle2 size={18} className="text-electric mt-0.5 flex-shrink-0" />
                     <span className="text-cloud">{feature}</span>
                   </div>
                 ))}

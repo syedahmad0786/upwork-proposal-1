@@ -72,7 +72,7 @@ export default function BookClient() {
                 <div className="space-y-4 mb-8">
                   {benefits.map((b) => (
                     <div key={b} className="flex items-start gap-3">
-                      <CheckCircle2 size={18} className="text-neon-green mt-0.5 flex-shrink-0" />
+                      <CheckCircle2 size={18} className="text-electric mt-0.5 flex-shrink-0" />
                       <span className="text-cloud">{b}</span>
                     </div>
                   ))}
@@ -158,7 +158,7 @@ export default function BookClient() {
                 <div className="text-sm text-muted">Automations Deployed</div>
               </div>
               <div>
-                <div className="text-3xl font-bold font-mono text-neon-green">85%</div>
+                <div className="text-3xl font-bold font-mono text-electric">85%</div>
                 <div className="text-sm text-muted">Clients Expand Scope</div>
               </div>
               <div>

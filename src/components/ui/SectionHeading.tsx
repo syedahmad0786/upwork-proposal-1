@@ -15,9 +15,9 @@ interface SectionHeadingProps {
 
 const badgeClasses = {
   blue: 'badge',
-  green: 'badge-green',
+  green: 'badge',
   pink: 'badge-pink',
-  cyan: 'badge',
+  cyan: 'badge-cyan',
 };
 
 export default function SectionHeading({
