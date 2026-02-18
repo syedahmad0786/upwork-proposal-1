@@ -1,31 +1,31 @@
 @import "tailwindcss";
 
 /* ============================================
-   AIXCEL SOLUTIONS — Design System v5
-   Theme: "Premium White" — Electric Blue + Cyan
+   AIXCEL SOLUTIONS — Design System v6
+   Theme: "Cosmic Dark" — Deep Space + Blue-Cyan Glow
    ============================================ */
 
 @theme {
-  /* === BRAND COLORS (Blue-Cyan System) === */
+  /* === DEEP SPACE PALETTE === */
   --color-void: #000000;
-  --color-deep: #0A0A0A;
-  --color-abyss: #111111;
-  --color-midnight: #1A1A1A;
-  --color-slate-dark: #E2E5EA;
-  --color-slate-mid: #CBD0D8;
+  --color-deep: #030712;
+  --color-abyss: #050B18;
+  --color-midnight: #0A1628;
+  --color-slate-dark: #1E293B;
+  --color-slate-mid: #334155;
 
-  /* === PRIMARY SURFACE (White theme) === */
-  --color-surface: #FFFFFF;
-  --color-surface-warm: #FAFAFA;
-  --color-surface-alt: #F5F5F7;
-  --color-surface-card: #FFFFFF;
-  --color-surface-dark: #111111;
+  /* === SURFACES (Dark-first) === */
+  --color-surface: #030712;
+  --color-surface-warm: #050B18;
+  --color-surface-alt: #0A1628;
+  --color-surface-card: rgba(15, 23, 42, 0.6);
+  --color-surface-dark: #020617;
 
   /* === PRIMARY ACCENT: Electric Blue → Cyan === */
-  --color-electric: #2563EB;
-  --color-electric-light: #3B82F6;
-  --color-cyan: #0891B2;
-  --color-cyan-light: #06B6D4;
+  --color-electric: #3B82F6;
+  --color-electric-light: #60A5FA;
+  --color-cyan: #06B6D4;
+  --color-cyan-light: #22D3EE;
 
   /* === SECONDARY ACCENTS === */
   --color-neon-pink: #E91E63;
@@ -34,23 +34,23 @@
   --color-violet: #7C3AED;
   --color-emerald: #10B981;
 
-  /* === TEXT (dark-on-white) === */
+  /* === TEXT (light-on-dark) === */
   --color-white: #FFFFFF;
-  --color-cloud: #F1F5F9;
-  --color-muted: #64748B;
-  --color-dim: #94A3B8;
-  --color-ghost: #CBD5E1;
-  --color-heading: #0F172A;
-  --color-body: #334155;
+  --color-cloud: #E2E8F0;
+  --color-muted: #94A3B8;
+  --color-dim: #64748B;
+  --color-ghost: #475569;
+  --color-heading: #F1F5F9;
+  --color-body: #94A3B8;
   --color-caption: #64748B;
 
-  /* === SURFACES === */
-  --color-glass: rgba(255, 255, 255, 0.85);
-  --color-glass-light: rgba(255, 255, 255, 0.6);
-  --color-glass-border: rgba(0, 0, 0, 0.06);
-  --color-glass-border-hover: rgba(0, 0, 0, 0.12);
-  --color-card-border: #E5E7EB;
-  --color-card-border-hover: #D1D5DB;
+  /* === GLASS & BORDERS (dark mode) === */
+  --color-glass: rgba(15, 23, 42, 0.7);
+  --color-glass-light: rgba(15, 23, 42, 0.4);
+  --color-glass-border: rgba(255, 255, 255, 0.06);
+  --color-glass-border-hover: rgba(255, 255, 255, 0.12);
+  --color-card-border: rgba(255, 255, 255, 0.08);
+  --color-card-border-hover: rgba(59, 130, 246, 0.3);
 
   /* === FONTS === */
   --font-sans: 'Poppins', system-ui, -apple-system, sans-serif;
@@ -81,8 +81,8 @@ body {
 }
 
 ::selection {
-  background-color: rgba(37, 99, 235, 0.15);
-  color: var(--color-heading);
+  background-color: rgba(59, 130, 246, 0.25);
+  color: var(--color-white);
 }
 
 /* ============================================
@@ -93,10 +93,10 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-surface-alt);
+  background: var(--color-deep);
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -104,72 +104,73 @@ body {
 }
 
 /* ============================================
-   PREMIUM CARDS — Clean, elevated, refined
+   COSMIC CARDS — Dark glassmorphism
    ============================================ */
 
 .glass {
   background: var(--color-glass);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
   border: 1px solid var(--color-glass-border);
 }
 
 .glass-hover:hover {
   border-color: var(--color-glass-border-hover);
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(15, 23, 42, 0.85);
 }
 
 .glass-card {
   background: var(--color-surface-card);
   border: 1px solid var(--color-card-border);
   border-radius: 20px;
+  backdrop-filter: blur(20px);
   transition: all 0.4s var(--ease-out-expo);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
 .glass-card:hover {
   border-color: var(--color-card-border-hover);
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.08), 0 0 30px rgba(6, 182, 212, 0.05);
 }
 
-/* Premium elevated card */
+/* Premium cosmic card */
 .premium-card {
   background: var(--color-surface-card);
   border: 1px solid var(--color-card-border);
   border-radius: 20px;
+  backdrop-filter: blur(20px);
   transition: all 0.4s var(--ease-out-expo);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .premium-card:hover {
-  border-color: var(--color-electric);
-  box-shadow: 0 24px 80px rgba(37, 99, 235, 0.1), 0 4px 24px rgba(0, 0, 0, 0.06);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 24px 80px rgba(59, 130, 246, 0.12), 0 0 40px rgba(6, 182, 212, 0.06);
   transform: translateY(-6px);
 }
 
-/* Dark section card */
+/* Dark card — for all sections */
 .dark-card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   backdrop-filter: blur(20px);
   transition: all 0.4s var(--ease-out-expo);
 }
 
 .dark-card:hover {
-  border-color: rgba(37, 99, 235, 0.4);
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 24px 80px rgba(37, 99, 235, 0.12);
+  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(15, 23, 42, 0.7);
+  box-shadow: 0 24px 80px rgba(59, 130, 246, 0.1);
   transform: translateY(-4px);
 }
 
 /* ============================================
-   GRADIENT TEXTS — Blue-Cyan System
+   GRADIENT TEXTS — Blue-Cyan Cosmic
    ============================================ */
 
 .gradient-text {
-  background: linear-gradient(135deg, #2563EB 0%, #0891B2 50%, #06B6D4 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #22D3EE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -183,21 +184,21 @@ body {
 }
 
 .gradient-text-electric {
-  background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #22D3EE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-cyan {
-  background: linear-gradient(135deg, #0891B2 0%, #22D3EE 100%);
+  background: linear-gradient(135deg, #06B6D4 0%, #22D3EE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* ============================================
-   BUTTONS — Electric Blue System
+   BUTTONS — Outline-first + gradient-fill
    ============================================ */
 
 .btn-primary {
@@ -206,26 +207,24 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  background: var(--color-heading);
+  background: transparent;
   color: white;
   font-weight: 600;
   font-size: 0.875rem;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.03em;
   border-radius: 14px;
-  border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s var(--ease-out-expo);
   overflow: hidden;
 }
 .btn-primary:hover {
-  background: var(--color-electric);
-  color: white;
-  box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
   transform: translateY(-2px);
 }
 .btn-primary:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-secondary {
@@ -234,42 +233,42 @@ body {
   gap: 0.5rem;
   padding: 0.875rem 2rem;
   background: transparent;
-  color: var(--color-heading);
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 600;
   font-size: 0.875rem;
-  letter-spacing: 0.01em;
-  border: 1.5px solid var(--color-card-border);
+  letter-spacing: 0.03em;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
   transition: all 0.3s var(--ease-out-expo);
 }
 .btn-secondary:hover {
-  border-color: var(--color-electric);
-  color: var(--color-electric);
-  background: rgba(37, 99, 235, 0.04);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
 }
 
-/* Dark-mode button variants */
+/* Gradient-fill button for special CTAs */
 .btn-primary-dark {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  background: linear-gradient(135deg, var(--color-electric) 0%, var(--color-cyan) 100%);
+  background: transparent;
   color: white;
   font-weight: 600;
   font-size: 0.875rem;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.03em;
   border-radius: 14px;
-  border: none;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+  border: 1.5px solid rgba(59, 130, 246, 0.4);
   transition: all 0.3s var(--ease-out-expo);
   overflow: hidden;
 }
 .btn-primary-dark:hover {
-  box-shadow: 0 8px 40px rgba(37, 99, 235, 0.45);
+  border-color: rgba(59, 130, 246, 0.7);
+  background: rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.2);
   transform: translateY(-2px);
 }
 
@@ -279,38 +278,59 @@ body {
   gap: 0.5rem;
   padding: 0.875rem 2rem;
   background: transparent;
-  color: white;
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 600;
   font-size: 0.875rem;
-  letter-spacing: 0.01em;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.03em;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
   transition: all 0.3s var(--ease-out-expo);
 }
 .btn-secondary-dark:hover {
-  border-color: rgba(37, 99, 235, 0.5);
-  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
   transform: translateY(-2px);
 }
 
+/* Navbar outline CTA — matching reference "Get Started" */
+.btn-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: transparent;
+  color: white;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  transition: all 0.3s var(--ease-out-expo);
+}
+.btn-nav:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.1);
+}
+
 /* ============================================
-   BACKGROUNDS & PATTERNS
+   COSMIC BACKGROUNDS & PATTERNS
    ============================================ */
 
 .dot-pattern {
-  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
 .dot-pattern-dark {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
 .grid-pattern {
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
@@ -326,27 +346,47 @@ body {
   z-index: 1;
 }
 
-/* Subtle texture for white sections */
-.texture-grain::before {
+/* Cosmic nebula glow - background effect for sections */
+.cosmic-glow-top {
+  background: radial-gradient(ellipse 800px 500px at 50% 0%, rgba(59, 130, 246, 0.08) 0%, rgba(6, 182, 212, 0.04) 30%, transparent 70%);
+}
+
+.cosmic-glow-center {
+  background: radial-gradient(ellipse 600px 600px at 50% 50%, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+}
+
+.radial-glow {
+  background: radial-gradient(ellipse 600px 400px at 50% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+}
+
+.radial-glow-cyan {
+  background: radial-gradient(ellipse 600px 400px at 50% 0%, rgba(6, 182, 212, 0.06) 0%, transparent 70%);
+}
+
+/* Star field background simulation */
+.star-field::before {
   content: '';
   position: absolute;
   inset: 0;
-  opacity: 0.4;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 40%, rgba(255, 255, 255, 0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 10% 60%, rgba(59, 130, 246, 0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 20%, rgba(6, 182, 212, 0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 90%, rgba(255, 255, 255, 0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 10%, rgba(255, 255, 255, 0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 85%, rgba(255, 255, 255, 0.18) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 55%, rgba(255, 255, 255, 0.12) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 15%, rgba(255, 255, 255, 0.22) 0%, transparent 100%);
   pointer-events: none;
   z-index: 0;
 }
 
-.radial-glow {
-  background: radial-gradient(ellipse 600px 400px at 50% 0%, rgba(37, 99, 235, 0.06) 0%, transparent 70%);
-}
-
-.radial-glow-cyan {
-  background: radial-gradient(ellipse 600px 400px at 50% 0%, rgba(8, 145, 178, 0.05) 0%, transparent 70%);
-}
-
 /* ============================================
-   SECTION LAYOUT — Proper spacing
+   SECTION LAYOUT
    ============================================ */
 
 .section-padding {
@@ -375,14 +415,14 @@ body {
 }
 
 /* ============================================
-   GLOW EFFECTS
+   GLOW EFFECTS — Cosmic
    ============================================ */
 
-.glow-blue { box-shadow: 0 0 60px rgba(37, 99, 235, 0.1); }
-.glow-cyan { box-shadow: 0 0 60px rgba(8, 145, 178, 0.1); }
-.glow-pink { box-shadow: 0 0 60px rgba(233, 30, 99, 0.1); }
-.glow-amber { box-shadow: 0 0 60px rgba(255, 145, 0, 0.1); }
-.glow-violet { box-shadow: 0 0 60px rgba(124, 58, 237, 0.1); }
+.glow-blue { box-shadow: 0 0 60px rgba(59, 130, 246, 0.15); }
+.glow-cyan { box-shadow: 0 0 60px rgba(6, 182, 212, 0.15); }
+.glow-pink { box-shadow: 0 0 60px rgba(233, 30, 99, 0.12); }
+.glow-amber { box-shadow: 0 0 60px rgba(255, 145, 0, 0.12); }
+.glow-violet { box-shadow: 0 0 60px rgba(124, 58, 237, 0.12); }
 
 .border-glow {
   position: relative;
@@ -393,7 +433,7 @@ body {
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(8, 145, 178, 0.3), rgba(124, 58, 237, 0.3));
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(6, 182, 212, 0.3), rgba(124, 58, 237, 0.3));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -446,20 +486,25 @@ body {
 }
 
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.15); }
-  50% { box-shadow: 0 0 40px rgba(37, 99, 235, 0.3); }
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.15); }
+  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.3); }
 }
 
 @keyframes border-flow {
-  0% { border-color: rgba(37, 99, 235, 0.3); }
-  33% { border-color: rgba(8, 145, 178, 0.3); }
+  0% { border-color: rgba(59, 130, 246, 0.3); }
+  33% { border-color: rgba(6, 182, 212, 0.3); }
   66% { border-color: rgba(124, 58, 237, 0.3); }
-  100% { border-color: rgba(37, 99, 235, 0.3); }
+  100% { border-color: rgba(59, 130, 246, 0.3); }
 }
 
 @keyframes scale-subtle {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
 }
 
 .animate-float { animation: float 6s ease-in-out infinite; }
@@ -479,9 +524,10 @@ body {
 .animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
 .animate-border-flow { animation: border-flow 4s ease-in-out infinite; }
 .animate-scale-subtle { animation: scale-subtle 4s ease-in-out infinite; }
+.animate-twinkle { animation: twinkle 4s ease-in-out infinite; }
 
 /* ============================================
-   BADGE / TAG STYLES — Blue-Cyan System
+   BADGE / TAG STYLES — Cosmic Dark
    ============================================ */
 
 .badge {
@@ -491,36 +537,36 @@ body {
   padding: 0.375rem 1rem;
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   border-radius: 9999px;
-  background: rgba(37, 99, 235, 0.08);
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  color: #1D4ED8;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #60A5FA;
 }
 
 .badge-green {
-  background: rgba(37, 99, 235, 0.08);
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  color: #1D4ED8;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #60A5FA;
 }
 
 .badge-cyan {
-  background: rgba(8, 145, 178, 0.08);
-  border: 1px solid rgba(8, 145, 178, 0.2);
-  color: #0E7490;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  color: #22D3EE;
 }
 
 .badge-pink {
-  background: rgba(233, 30, 99, 0.08);
-  border: 1px solid rgba(233, 30, 99, 0.2);
-  color: var(--color-neon-pink);
+  background: rgba(233, 30, 99, 0.1);
+  border: 1px solid rgba(233, 30, 99, 0.25);
+  color: #F472B6;
 }
 
 .badge-amber {
-  background: rgba(255, 145, 0, 0.08);
-  border: 1px solid rgba(255, 145, 0, 0.2);
-  color: #E65100;
+  background: rgba(255, 145, 0, 0.1);
+  border: 1px solid rgba(255, 145, 0, 0.25);
+  color: #FB923C;
 }
 
 .badge-dark {
@@ -530,31 +576,31 @@ body {
   padding: 0.375rem 1rem;
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   border-radius: 9999px;
-  background: rgba(37, 99, 235, 0.15);
-  border: 1px solid rgba(37, 99, 235, 0.3);
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.3);
   color: #60A5FA;
 }
 
 /* ============================================
-   METRIC CARD — White theme
+   METRIC CARD — Cosmic Dark
    ============================================ */
 
 .metric-card {
   text-align: center;
   padding: 2rem 1.5rem;
   border-radius: 20px;
-  background: var(--color-surface-card);
-  border: 1px solid var(--color-card-border);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
   transition: all 0.4s var(--ease-out-expo);
 }
 .metric-card:hover {
-  border-color: var(--color-electric);
+  border-color: rgba(59, 130, 246, 0.3);
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.1), 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.1);
 }
 
 /* ============================================
@@ -563,7 +609,7 @@ body {
 
 .divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-card-border), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
 }
 
 /* ============================================

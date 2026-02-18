@@ -13,13 +13,6 @@ interface SectionHeadingProps {
   dark?: boolean;
 }
 
-const badgeClasses = {
-  blue: 'badge',
-  green: 'badge',
-  pink: 'badge-pink',
-  cyan: 'badge-cyan',
-};
-
 export default function SectionHeading({
   badge,
   badgeColor = 'green',
@@ -27,7 +20,7 @@ export default function SectionHeading({
   titleHighlight,
   description,
   align = 'center',
-  dark = false,
+  dark = true,
 }: SectionHeadingProps) {
   const alignClasses = align === 'center' ? 'text-center mx-auto' : 'text-left';
 
@@ -40,11 +33,11 @@ export default function SectionHeading({
       className={`max-w-3xl mb-16 ${alignClasses}`}
     >
       {badge && (
-        <span className={`${dark ? 'badge-dark' : badgeClasses[badgeColor]} mb-4 inline-block`}>
+        <span className="badge-dark mb-4 inline-block">
           {badge}
         </span>
       )}
-      <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4 uppercase ${dark ? 'text-white' : 'text-heading'}`}>
+      <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4 uppercase text-white`}>
         {title}
         {titleHighlight && (
           <>
@@ -54,7 +47,7 @@ export default function SectionHeading({
         )}
       </h2>
       {description && (
-        <p className={`text-lg leading-relaxed text-pretty ${dark ? 'text-white/60' : 'text-caption'}`}>
+        <p className="text-lg leading-relaxed text-pretty text-white/50">
           {description}
         </p>
       )}

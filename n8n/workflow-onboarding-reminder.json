@@ -1,0 +1,447 @@
+{
+  "name": "Upwork WF1 - Onboarding Reminder (Scheduled)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Run Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 400]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/customers",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "in.(paid,onboarding_sent)"
+            },
+            {
+              "name": "select",
+              "value": "id,email,status,created_at,updated_at"
+            },
+            {
+              "name": "order",
+              "value": "created_at.asc"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SUPABASE_SERVICE_KEY }}"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.SUPABASE_SERVICE_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "fetch-pending",
+      "name": "Fetch Pending Customers",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filter customers who need reminders\n// Reminder logic:\n//   - 24h after payment: first reminder\n//   - 72h after payment: second reminder (more urgent)\n//   - 168h (7 days): final reminder\n// We check updated_at to avoid spamming (only send if no recent update)\n\nconst customers = $input.first().json;\nconst now = new Date();\nconst results = [];\n\nif (!Array.isArray(customers) || customers.length === 0) {\n  return [{ json: { has_reminders: false, count: 0, customers: [] } }];\n}\n\nfor (const c of customers) {\n  const createdAt = new Date(c.created_at);\n  const hoursSincePayment = (now - createdAt) / (1000 * 60 * 60);\n  \n  let reminder_type = null;\n  let urgency = 'normal';\n  \n  if (hoursSincePayment >= 168) {\n    reminder_type = 'final_reminder';\n    urgency = 'high';\n  } else if (hoursSincePayment >= 72) {\n    reminder_type = 'second_reminder';\n    urgency = 'medium';\n  } else if (hoursSincePayment >= 24) {\n    reminder_type = 'first_reminder';\n    urgency = 'normal';\n  }\n  \n  if (reminder_type) {\n    results.push({\n      customer_id: c.id,\n      email: c.email,\n      status: c.status,\n      created_at: c.created_at,\n      hours_since_payment: Math.round(hoursSincePayment),\n      reminder_type,\n      urgency\n    });\n  }\n}\n\nreturn [{ json: { has_reminders: results.length > 0, count: results.length, customers: results } }];"
+      },
+      "id": "filter-reminders",
+      "name": "Calculate Reminder Eligibility",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-reminders",
+              "leftValue": "={{ $json.has_reminders }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-has-reminders",
+      "name": "Any Reminders Needed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Split customers into individual items for the loop\nconst data = $input.first().json;\nreturn data.customers.map(c => ({ json: c }));"
+      },
+      "id": "split-customers",
+      "name": "Split Into Individual Customers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 340]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Check audit_log for recent reminders to avoid spamming\n// We'll build a Supabase query to check\nconst c = $input.first().json;\nreturn [{ json: { ...c, check_url: `${$env.SUPABASE_URL}/rest/v1/audit_log?customer_id=eq.${c.customer_id}&event_type=eq.reminder_${c.reminder_type}&order=created_at.desc&limit=1` } }];"
+      },
+      "id": "build-check-url",
+      "name": "Build Dedup Check URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 340]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.check_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SUPABASE_SERVICE_KEY }}"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.SUPABASE_SERVICE_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "check-already-sent",
+      "name": "Check If Already Reminded",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 340]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Determine if we should send this reminder\nconst response = $input.first().json;\nconst customer = $('Build Dedup Check URL').first().json;\n\nconst alreadySent = Array.isArray(response) && response.length > 0;\n\n// If already sent this reminder type, check if enough time passed for re-send\nlet shouldSend = !alreadySent;\nif (alreadySent) {\n  const lastSent = new Date(response[0].created_at);\n  const hoursSinceLast = (new Date() - lastSent) / (1000 * 60 * 60);\n  // Don't re-send same reminder type within 24 hours\n  shouldSend = hoursSinceLast >= 24;\n}\n\nreturn [{ json: { ...customer, should_send: shouldSend, already_sent: alreadySent } }];"
+      },
+      "id": "dedup-logic",
+      "name": "Dedup Logic",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1780, 340]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "should-send",
+              "leftValue": "={{ $json.should_send }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-should-send",
+      "name": "Should Send?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [2000, 340]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build email subject and content based on reminder type\nconst c = $input.first().json;\nconst siteUrl = $env.SITE_URL || 'https://upwork-proposal-1.vercel.app';\n\nlet subject, headline, bodyText, ctaText, urgencyColor;\n\nswitch (c.reminder_type) {\n  case 'first_reminder':\n    subject = 'Quick Reminder: Complete Your Onboarding';\n    headline = 'Don\\'t Forget Your Onboarding! 📋';\n    bodyText = 'You purchased the AI Visibility Optimization package — great choice! To get started, we just need you to fill out a quick 2-minute onboarding form.';\n    ctaText = 'Complete Onboarding Now →';\n    urgencyColor = '#3b82f6';\n    break;\n  case 'second_reminder':\n    subject = 'Your AI Optimization Is Waiting — Complete Onboarding';\n    headline = 'We\\'re Ready When You Are ⏳';\n    bodyText = 'It\\'s been a few days since your purchase. We\\'re eager to start optimizing your AI visibility, but we need your onboarding details first. It only takes 2 minutes!';\n    ctaText = 'Complete Onboarding Now →';\n    urgencyColor = '#f59e0b';\n    break;\n  case 'final_reminder':\n    subject = 'Final Reminder: Complete Onboarding to Start Your Optimization';\n    headline = 'Last Call — Don\\'t Miss Out 🔔';\n    bodyText = 'It\\'s been a week since your purchase. We want to deliver amazing results for you, but we can\\'t start without your onboarding details. This is our final automated reminder — please complete the form so we can begin!';\n    ctaText = 'Complete Onboarding Now →';\n    urgencyColor = '#ef4444';\n    break;\n}\n\nconst html = `<!DOCTYPE html>\n<html>\n<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head>\n<body style=\"margin:0; padding:0; background-color:#0a0a0f; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;\">\n  <div style=\"max-width:560px; margin:0 auto; padding:40px 20px;\">\n    <div style=\"background:linear-gradient(180deg, rgba(59,130,246,0.1) 0%, rgba(6,182,212,0.05) 100%); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:40px;\">\n      <h1 style=\"color:#ffffff; font-size:24px; font-weight:700; margin:0 0 16px;\">${headline}</h1>\n      <p style=\"color:rgba(255,255,255,0.6); font-size:14px; line-height:1.6; margin:0 0 24px;\">${bodyText}</p>\n      <a href=\"${siteUrl}/onboarding\" style=\"display:inline-block; background:${urgencyColor}; color:#ffffff; text-decoration:none; font-weight:600; font-size:15px; padding:14px 32px; border-radius:12px;\">${ctaText}</a>\n      <p style=\"color:rgba(255,255,255,0.4); font-size:12px; margin:24px 0 0;\">If you have questions, reply to this email.</p>\n    </div>\n    <p style=\"color:rgba(255,255,255,0.3); font-size:11px; text-align:center; margin-top:16px;\">AiXCEL Solutions — AI Automation & Visibility</p>\n  </div>\n</body>\n</html>`;\n\nreturn [{ json: { ...c, email_subject: subject, email_html: html } }];"
+      },
+      "id": "build-email",
+      "name": "Build Reminder Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2220, 280]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.FROM_EMAIL || 'hello@aixcelsolutions.com' }}",
+        "toEmail": "={{ $json.email }}",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "html",
+        "html": "={{ $json.email_html }}",
+        "options": {}
+      },
+      "id": "send-reminder",
+      "name": "Send Reminder Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [2440, 280],
+      "credentials": {
+        "smtp": {
+          "id": "SMTP_CREDENTIAL_ID",
+          "name": "SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/audit_log",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SUPABASE_SERVICE_KEY }}"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.SUPABASE_SERVICE_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"customer_id\": \"{{ $('Build Reminder Email').item.json.customer_id }}\",\n  \"event_type\": \"reminder_{{ $('Build Reminder Email').item.json.reminder_type }}\",\n  \"details\": {{ JSON.stringify({ email: $('Build Reminder Email').item.json.email, reminder_type: $('Build Reminder Email').item.json.reminder_type, urgency: $('Build Reminder Email').item.json.urgency, hours_since_payment: $('Build Reminder Email').item.json.hours_since_payment }) }},\n  \"workflow_name\": \"onboarding-reminder\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "log-reminder",
+      "name": "Log: Reminder Sent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2660, 280]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/audit_log",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SUPABASE_SERVICE_KEY }}"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.SUPABASE_SERVICE_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"event_type\": \"reminder_scan_completed\",\n  \"details\": {{ JSON.stringify({ customers_checked: $('Calculate Reminder Eligibility').first().json.count || 0, has_reminders: false, scan_time: new Date().toISOString() }) }},\n  \"workflow_name\": \"onboarding-reminder\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "log-no-reminders",
+      "name": "Log: No Reminders Needed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 520]
+    }
+  ],
+  "connections": {
+    "Run Every 6 Hours": {
+      "main": [
+        [
+          {
+            "node": "Fetch Pending Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Pending Customers": {
+      "main": [
+        [
+          {
+            "node": "Calculate Reminder Eligibility",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Reminder Eligibility": {
+      "main": [
+        [
+          {
+            "node": "Any Reminders Needed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Any Reminders Needed?": {
+      "main": [
+        [
+          {
+            "node": "Split Into Individual Customers",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log: No Reminders Needed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Into Individual Customers": {
+      "main": [
+        [
+          {
+            "node": "Build Dedup Check URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Dedup Check URL": {
+      "main": [
+        [
+          {
+            "node": "Check If Already Reminded",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Already Reminded": {
+      "main": [
+        [
+          {
+            "node": "Dedup Logic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dedup Logic": {
+      "main": [
+        [
+          {
+            "node": "Should Send?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Should Send?": {
+      "main": [
+        [
+          {
+            "node": "Build Reminder Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Reminder Email": {
+      "main": [
+        [
+          {
+            "node": "Send Reminder Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reminder Email": {
+      "main": [
+        [
+          {
+            "node": "Log: Reminder Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

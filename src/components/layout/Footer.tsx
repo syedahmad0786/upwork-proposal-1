@@ -35,18 +35,19 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A0A0A] text-white">
+    <footer className="bg-[#030712] text-white">
       {/* CTA Banner */}
       <div className="container-custom section-padding">
-        <div className="relative rounded-3xl overflow-hidden p-8 sm:p-12 lg:p-16 border border-white/10 bg-gradient-to-br from-[#111111] to-[#0A0A0A]">
-          <div className="absolute inset-0 dot-pattern-dark opacity-30" />
+        <div className="relative rounded-3xl overflow-hidden p-8 sm:p-12 lg:p-16 border border-white/[0.08] bg-gradient-to-br from-[#0F172A] to-[#030712]">
+          <div className="absolute inset-0 dot-pattern opacity-20" />
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-bl from-electric/10 to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-gradient-to-tr from-cyan/8 to-transparent rounded-full blur-3xl" />
           <div className="relative z-10 max-w-2xl">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-4 leading-tight uppercase">
               Ready to automate the work that{' '}
               <span className="gradient-text">slows you down?</span>
             </h2>
-            <p className="text-lg text-white/60 mb-8">
+            <p className="text-lg text-white/50 mb-8">
               Book a free strategy session. We&apos;ll map your highest-ROI automation
               opportunities in 60 minutes.
             </p>
@@ -78,26 +79,26 @@ export default function Footer() {
               />
               <span className="text-xl font-bold text-white uppercase tracking-tight">AiXCEL</span>
             </Link>
-            <p className="text-sm text-white/50 leading-relaxed mb-6">
+            <p className="text-sm text-white/40 leading-relaxed mb-6">
               We automate the work that slows your business down. AI agents, voice AI,
               and enterprise automation for teams that move fast.
             </p>
             <div className="space-y-3 text-sm">
               <a
                 href="mailto:ahmadbukhari4245@gmail.com"
-                className="flex items-center gap-2 text-white/50 hover:text-electric transition-colors"
+                className="flex items-center gap-2 text-white/40 hover:text-electric transition-colors"
               >
                 <Mail size={14} />
                 ahmadbukhari4245@gmail.com
               </a>
               <a
                 href="tel:+923005174444"
-                className="flex items-center gap-2 text-white/50 hover:text-electric transition-colors"
+                className="flex items-center gap-2 text-white/40 hover:text-electric transition-colors"
               >
                 <Phone size={14} />
                 +92 300 517 4444
               </a>
-              <div className="flex items-center gap-2 text-white/50">
+              <div className="flex items-center gap-2 text-white/40">
                 <MapPin size={14} />
                 Global (Remote-First)
               </div>
@@ -114,7 +115,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-electric transition-colors"
+                    className="text-sm text-white/40 hover:text-electric transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -133,7 +134,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-electric transition-colors"
+                    className="text-sm text-white/40 hover:text-electric transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -154,7 +155,7 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-electric transition-colors"
+                    className="inline-flex items-center gap-1.5 text-sm text-white/40 hover:text-electric transition-colors"
                   >
                     {link.label}
                     <ArrowUpRight size={12} />
@@ -167,8 +168,8 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-white/10">
-        <div className="container-custom py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/40">
+      <div className="border-t border-white/[0.08]">
+        <div className="container-custom py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/30">
           <p>&copy; {new Date().getFullYear()} AiXCEL Solutions. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-electric transition-colors">

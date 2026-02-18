@@ -55,3 +55,29 @@ CREATE POLICY "Service role full access" ON customers
   FOR ALL
   USING (auth.role() = 'service_role')
   WITH CHECK (auth.role() = 'service_role');
+
+-- Audit Log table: centralized event tracking for all workflows
+CREATE TABLE IF NOT EXISTS audit_log (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  customer_id UUID REFERENCES customers(id) ON DELETE SET NULL,
+  event_type TEXT NOT NULL,
+  status_from TEXT,
+  status_to TEXT,
+  details JSONB DEFAULT '{}'::jsonb,
+  workflow_name TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes for audit_log
+CREATE INDEX idx_audit_log_customer ON audit_log(customer_id);
+CREATE INDEX idx_audit_log_event_type ON audit_log(event_type);
+CREATE INDEX idx_audit_log_created_at ON audit_log(created_at DESC);
+CREATE INDEX idx_audit_log_workflow ON audit_log(workflow_name);
+
+-- RLS for audit_log
+ALTER TABLE audit_log ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Service role full access audit" ON audit_log
+  FOR ALL
+  USING (auth.role() = 'service_role')
+  WITH CHECK (auth.role() = 'service_role');

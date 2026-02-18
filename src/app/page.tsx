@@ -36,7 +36,7 @@ import { techTools, TechLogoItem } from '@/components/ui/TechLogos';
 /* ─── Dynamic import for Three.js scene (no SSR) ─── */
 const HeroScene = dynamic(() => import('@/components/three/HeroScene'), {
   ssr: false,
-  loading: () => <div className="absolute inset-0 bg-[#0A0A0A]" />,
+  loading: () => <div className="absolute inset-0 bg-[#030712]" />,
 });
 
 const glowColors: Array<'electric' | 'pink' | 'amber' | 'violet' | 'cyan' | 'blue'> = [
@@ -56,12 +56,12 @@ export default function HomePage() {
   return (
     <>
       {/* ==========================================
-          HERO — Dark section with 3D scene + parallax
+          HERO — Cosmic dark with 3D scene + parallax
           ========================================== */}
       <motion.section
         ref={heroRef}
         style={{ opacity: heroOpacity, scale: heroScale }}
-        className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#0A0A0A]"
+        className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#030712]"
       >
         {/* 3D Background Scene */}
         <HeroScene />
@@ -71,8 +71,11 @@ export default function HomePage() {
         <FloatingShape speed={-0.2} size={400} color="rgba(8, 145, 178, 0.06)" blur={80} bottom="-5rem" left="-10rem" />
 
         {/* Overlay gradients for depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/40 via-transparent to-[#0A0A0A]/60 z-[1]" />
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0A0A0A] to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030712]/40 via-transparent to-[#030712]/60 z-[1]" />
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#030712] to-transparent z-[1]" />
+
+        {/* Star field effect */}
+        <div className="absolute inset-0 star-field z-[1] opacity-60" />
 
         <motion.div style={{ y: heroY }} className="container-custom relative z-10">
           <div className="max-w-5xl mx-auto text-center">
@@ -180,20 +183,20 @@ export default function HomePage() {
       </motion.section>
 
       {/* ==========================================
-          TRUST BAR — Clean white with scrolling logos
+          TRUST BAR — Dark with scrolling logos
           ========================================== */}
-      <section className="py-16 border-b border-card-border overflow-hidden bg-surface-warm relative texture-grain">
+      <section className="py-16 border-b border-white/[0.06] overflow-hidden bg-[#050B18] relative">
         <div className="container-custom mb-8 relative z-10">
           <BlurFade delay={0.1} direction="up">
-            <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-caption">
+            <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-white/40">
               Powered by the tools you trust
             </p>
           </BlurFade>
         </div>
         <div className="relative z-10">
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-surface-warm to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-surface-warm to-transparent z-10" />
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#050B18] to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#050B18] to-transparent z-10" />
 
           <div className="flex animate-marquee">
             {[...techTools, ...techTools].map((tool, i) => (
@@ -206,11 +209,11 @@ export default function HomePage() {
       </section>
 
       {/* ==========================================
-          SERVICES — White section with TiltCards
+          SERVICES — Dark section with TiltCards
           ========================================== */}
-      <section className="section-padding relative bg-surface texture-grain">
-        <div className="absolute inset-0 dot-pattern opacity-30" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-electric/[0.04] to-transparent rounded-full blur-3xl" />
+      <section className="section-padding relative bg-[#030712]">
+        <div className="absolute inset-0 dot-pattern opacity-20" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-electric/[0.06] to-transparent rounded-full blur-3xl" />
         <FloatingShape speed={0.15} size={300} color="rgba(8, 145, 178, 0.05)" blur={80} top="10rem" right="-5rem" />
 
         <div className="container-custom relative z-10">
@@ -235,21 +238,21 @@ export default function HomePage() {
                 <motion.div key={service.slug} variants={fadeInUp}>
                   <Link href={`/services/${service.slug}`}>
                     <TiltCard maxTilt={6} glare>
-                      <GlassCard className="h-full group cursor-pointer" padding="lg" glow={color} variant="light" hover={false}>
+                      <GlassCard className="h-full group cursor-pointer" padding="lg" glow={color} hover={false}>
                         <div className="w-12 h-12 rounded-xl bg-electric/8 flex items-center justify-center mb-5 group-hover:bg-electric/15 transition-colors border border-electric/15">
                           <Icon className="text-electric" size={24} />
                         </div>
-                        <h3 className="text-xl font-bold text-heading mb-2 group-hover:text-electric transition-colors uppercase">
+                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-electric transition-colors uppercase">
                           {service.shortTitle}
                         </h3>
-                        <p className="text-sm text-caption leading-relaxed mb-4">
+                        <p className="text-sm text-white/40 leading-relaxed mb-4">
                           {service.description}
                         </p>
                         <div className="flex flex-wrap gap-2 mb-5">
                           {service.metrics.map((m) => (
                             <span
                               key={m.label}
-                              className="text-xs font-mono bg-surface-alt px-2.5 py-1 rounded-md text-body border border-card-border"
+                              className="text-xs font-mono bg-white/[0.04] px-2.5 py-1 rounded-md text-white/60 border border-white/[0.08]"
                             >
                               <span className="text-electric font-bold">{m.value}</span>{' '}
                               {m.label}
@@ -272,8 +275,9 @@ export default function HomePage() {
       {/* ==========================================
           STATS — Animated CountUp metric cards
           ========================================== */}
-      <section className="py-24 bg-surface-warm border-y border-card-border relative">
-        <div className="absolute inset-0 dot-pattern opacity-20" />
+      <section className="py-24 bg-[#050B18] border-y border-white/[0.06] relative">
+        <div className="absolute inset-0 dot-pattern opacity-15" />
+        <div className="absolute inset-0 cosmic-glow-center" />
         <FloatingShape speed={-0.1} size={400} color="rgba(59, 130, 246, 0.03)" blur={80} top="2.5rem" left="2.5rem" />
 
         <div className="container-custom relative z-10">
@@ -288,7 +292,7 @@ export default function HomePage() {
               <motion.div
                 key={stat.label}
                 variants={scaleIn}
-                className="metric-card"
+                className="rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm p-6 text-center hover:border-electric/30 transition-all duration-300"
               >
                 <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold gradient-text mb-2 font-mono">
                   {stat.numericValue >= 100 ? (
@@ -299,8 +303,8 @@ export default function HomePage() {
                     <CountUp value={stat.numericValue} suffix={stat.suffix} />
                   )}
                 </div>
-                <div className="text-sm font-bold text-heading mb-1 uppercase tracking-wide">{stat.label}</div>
-                <div className="text-xs text-caption">{stat.description}</div>
+                <div className="text-sm font-bold text-white mb-1 uppercase tracking-wide">{stat.label}</div>
+                <div className="text-xs text-white/40">{stat.description}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -308,10 +312,10 @@ export default function HomePage() {
       </section>
 
       {/* ==========================================
-          CASE STUDIES — White section with results
+          CASE STUDIES — Dark with results
           ========================================== */}
-      <section className="section-padding relative bg-surface">
-        <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-gradient-to-bl from-electric/[0.03] to-transparent rounded-full blur-3xl" />
+      <section className="section-padding relative bg-[#030712]">
+        <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-gradient-to-bl from-electric/[0.05] to-transparent rounded-full blur-3xl" />
         <FloatingShape speed={0.2} size={250} color="rgba(8, 145, 178, 0.04)" blur={80} bottom="5rem" left="2.5rem" />
 
         <div className="container-custom relative z-10">
@@ -336,37 +340,37 @@ export default function HomePage() {
                 <motion.div key={cs.slug} variants={fadeInUp}>
                   <Link href={`/case-studies/${cs.slug}`}>
                     <TiltCard maxTilt={4} glare>
-                      <GlassCard className="h-full group cursor-pointer" padding="lg" glow={color} variant="light" hover={false}>
+                      <GlassCard className="h-full group cursor-pointer" padding="lg" glow={color} hover={false}>
                         <div className="flex items-start justify-between mb-4">
-                          <span className="badge">{cs.industry}</span>
+                          <span className="badge-dark">{cs.industry}</span>
                           <div className="text-right">
                             <div className="text-2xl font-extrabold font-mono gradient-text">
                               {cs.metric}
                             </div>
-                            <div className="text-xs text-caption uppercase tracking-wide">{cs.metricLabel}</div>
+                            <div className="text-xs text-white/40 uppercase tracking-wide">{cs.metricLabel}</div>
                           </div>
                         </div>
-                        <h3 className="text-xl font-bold text-heading mb-2 group-hover:text-electric transition-colors">
+                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-electric transition-colors">
                           {cs.title}
                         </h3>
-                        <p className="text-sm text-caption leading-relaxed mb-4">
+                        <p className="text-sm text-white/40 leading-relaxed mb-4">
                           {cs.subtitle}
                         </p>
                         <div className="flex flex-wrap gap-2 mb-4">
                           {cs.services.map((s) => (
                             <span
                               key={s}
-                              className="text-xs bg-surface-alt px-2 py-0.5 rounded border border-card-border text-body"
+                              className="text-xs bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.08] text-white/60"
                             >
                               {s}
                             </span>
                           ))}
                         </div>
                         {cs.testimonial && (
-                          <blockquote className="text-sm text-caption italic border-l-2 border-electric/30 pl-4">
+                          <blockquote className="text-sm text-white/40 italic border-l-2 border-electric/30 pl-4">
                             &ldquo;{cs.testimonial.quote.substring(0, 100)}...&rdquo;
                             <br />
-                            <span className="text-xs text-caption/80 not-italic">
+                            <span className="text-xs text-white/30 not-italic">
                               — {cs.testimonial.author}, {cs.testimonial.role}
                             </span>
                           </blockquote>
@@ -381,7 +385,7 @@ export default function HomePage() {
 
           <div className="text-center">
             <MagneticButton strength={0.25} as="div" className="inline-block">
-              <Link href="/case-studies" className="btn-secondary">
+              <Link href="/case-studies" className="btn-secondary-dark">
                 <span>View All Case Studies</span>
                 <ArrowRight size={16} />
               </Link>
@@ -391,10 +395,11 @@ export default function HomePage() {
       </section>
 
       {/* ==========================================
-          PROCESS — Light alt background with animations
+          PROCESS — Dark alt with cosmic glow
           ========================================== */}
-      <section className="section-padding bg-surface-alt border-y border-card-border relative">
-        <div className="absolute inset-0 grid-pattern opacity-60" />
+      <section className="section-padding bg-[#0A1628] border-y border-white/[0.06] relative">
+        <div className="absolute inset-0 grid-pattern opacity-40" />
+        <div className="absolute inset-0 cosmic-glow-top" />
         <FloatingShape speed={0.12} size={350} color="rgba(59, 130, 246, 0.04)" blur={80} top="5rem" right="2.5rem" />
 
         <div className="container-custom relative z-10">
@@ -410,17 +415,17 @@ export default function HomePage() {
             {processSteps.map((step, i) => (
               <ScrollReveal key={step.number} delay={i * 0.15}>
                 <TiltCard maxTilt={5} glare={false}>
-                  <div className="rounded-2xl border border-card-border bg-surface-card p-6 h-full hover:border-electric/40 hover:shadow-[0_20px_60px_rgba(37,99,235,0.08)] transition-all duration-400 group">
+                  <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm p-6 h-full hover:border-electric/30 hover:shadow-[0_20px_60px_rgba(59,130,246,0.08)] transition-all duration-400 group">
                     <div className="text-6xl font-extrabold font-mono text-electric/10 mb-4 group-hover:text-electric/20 transition-colors">
                       {step.number}
                     </div>
                     <span className="text-xs font-mono text-electric font-bold mb-2 block uppercase tracking-wider">
                       {step.duration}
                     </span>
-                    <h3 className="text-xl font-bold text-heading mb-3 uppercase">
+                    <h3 className="text-xl font-bold text-white mb-3 uppercase">
                       {step.title}
                     </h3>
-                    <p className="text-sm text-caption leading-relaxed">
+                    <p className="text-sm text-white/40 leading-relaxed">
                       {step.description}
                     </p>
                   </div>
@@ -432,10 +437,10 @@ export default function HomePage() {
       </section>
 
       {/* ==========================================
-          TESTIMONIALS — White section, premium feel
+          TESTIMONIALS — Dark with premium glow
           ========================================== */}
-      <section className="section-padding relative bg-surface">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-electric/[0.03] to-transparent rounded-full blur-3xl" />
+      <section className="section-padding relative bg-[#030712]">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-electric/[0.05] to-transparent rounded-full blur-3xl" />
         <FloatingShape speed={-0.15} size={300} color="rgba(8, 145, 178, 0.04)" blur={80} top="10rem" left="-5rem" />
 
         <div className="container-custom relative z-10">
@@ -457,7 +462,7 @@ export default function HomePage() {
               return (
                 <motion.div key={i} variants={fadeInUp}>
                   <TiltCard maxTilt={4} glare>
-                    <GlassCard padding="lg" className="h-full flex flex-col" glow={color} variant="light" hover={false}>
+                    <GlassCard padding="lg" className="h-full flex flex-col" glow={color} hover={false}>
                       <div className="flex gap-1 mb-4">
                         {[...Array(5)].map((_, j) => (
                           <Star
@@ -467,18 +472,18 @@ export default function HomePage() {
                           />
                         ))}
                       </div>
-                      <blockquote className="text-sm text-body leading-relaxed mb-6 flex-1">
+                      <blockquote className="text-sm text-white/60 leading-relaxed mb-6 flex-1">
                         &ldquo;{t.quote}&rdquo;
                       </blockquote>
-                      <div className="flex items-center gap-3 pt-4 border-t border-card-border">
+                      <div className="flex items-center gap-3 pt-4 border-t border-white/[0.08]">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-electric to-cyan flex items-center justify-center text-white font-extrabold text-sm">
                           {t.author[0]}
                         </div>
                         <div>
-                          <div className="text-sm font-bold text-heading">
+                          <div className="text-sm font-bold text-white">
                             {t.author}
                           </div>
-                          <div className="text-xs text-caption">
+                          <div className="text-xs text-white/40">
                             {t.role}, {t.company}
                           </div>
                         </div>
@@ -493,23 +498,24 @@ export default function HomePage() {
       </section>
 
       {/* ==========================================
-          WHY AIXCEL — Alt background differentiators
+          WHY AIXCEL — Dark alt with differentiators
           ========================================== */}
-      <section className="section-padding bg-surface-alt border-y border-card-border relative">
-        <div className="absolute inset-0 dot-pattern opacity-20" />
+      <section className="section-padding bg-[#0A1628] border-y border-white/[0.06] relative">
+        <div className="absolute inset-0 dot-pattern opacity-15" />
+        <div className="absolute inset-0 star-field opacity-40" />
         <FloatingShape speed={0.1} size={400} color="rgba(59, 130, 246, 0.03)" blur={80} bottom="5rem" right="5rem" />
 
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <ScrollReveal>
-              <span className="badge mb-4 inline-block">Why AiXCEL</span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-heading leading-tight mb-6 uppercase">
+              <span className="badge-dark mb-4 inline-block">Why AiXCEL</span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-6 uppercase">
                 Not another dev shop.{' '}
                 <ShimmerText className="text-3xl sm:text-4xl lg:text-5xl font-extrabold">
                   Your automation partner.
                 </ShimmerText>
               </h2>
-              <p className="text-lg text-caption leading-relaxed mb-8">
+              <p className="text-lg text-white/40 leading-relaxed mb-8">
                 We don&apos;t just build automations and walk away. We embed into your
                 operations, measure real impact, and continuously optimize for better
                 results.
@@ -528,7 +534,7 @@ export default function HomePage() {
                         size={18}
                         className="text-electric mt-0.5 flex-shrink-0"
                       />
-                      <span className="text-sm text-body">{item}</span>
+                      <span className="text-sm text-white/60">{item}</span>
                     </div>
                   </BlurFade>
                 ))}
@@ -545,7 +551,7 @@ export default function HomePage() {
                 ].map((item) => (
                   <TiltCard key={item.label} maxTilt={6} glare>
                     <div
-                      className="rounded-2xl border border-card-border bg-surface-card p-6 text-center hover:border-electric/30 hover:shadow-[0_20px_60px_rgba(37,99,235,0.08)] transition-all duration-400 group"
+                      className="rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm p-6 text-center hover:border-electric/30 hover:shadow-[0_20px_60px_rgba(59,130,246,0.08)] transition-all duration-400 group"
                     >
                       <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mx-auto mb-3`}>
                         <item.icon size={22} className="text-electric" />
@@ -553,7 +559,7 @@ export default function HomePage() {
                       <div className="text-2xl font-extrabold font-mono gradient-text mb-1">
                         {item.value}
                       </div>
-                      <div className="text-xs text-caption uppercase tracking-wide font-bold">{item.label}</div>
+                      <div className="text-xs text-white/40 uppercase tracking-wide font-bold">{item.label}</div>
                     </div>
                   </TiltCard>
                 ))}
@@ -564,11 +570,12 @@ export default function HomePage() {
       </section>
 
       {/* ==========================================
-          FINAL CTA — Dark section with shimmer + parallax
+          FINAL CTA — Deep cosmic with shimmer + parallax
           ========================================== */}
-      <section className="section-padding relative overflow-hidden bg-[#0A0A0A]">
-        <div className="absolute inset-0 dot-pattern-dark opacity-20" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-b from-electric/5 to-transparent rounded-full blur-3xl" />
+      <section className="section-padding relative overflow-hidden bg-[#030712]">
+        <div className="absolute inset-0 dot-pattern opacity-15" />
+        <div className="absolute inset-0 star-field opacity-50" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-b from-electric/8 to-transparent rounded-full blur-3xl" />
         <FloatingShape speed={0.15} size={500} color="rgba(8, 145, 178, 0.05)" blur={80} bottom="-10rem" right="-10rem" />
 
         <div className="container-custom relative z-10 text-center">

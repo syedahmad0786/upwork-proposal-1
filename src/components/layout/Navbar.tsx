@@ -26,8 +26,6 @@ export default function Navbar() {
     setActiveDropdown(null);
   }, [pathname]);
 
-  const isHome = pathname === '/';
-
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -35,10 +33,8 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 backdrop-blur-xl border-b border-black/5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]'
-          : isHome
-            ? 'bg-transparent'
-            : 'bg-white/60 backdrop-blur-md'
+          ? 'bg-[#030712]/80 backdrop-blur-xl border-b border-white/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.3)]'
+          : 'bg-transparent'
       }`}
     >
       <nav className="container-custom">
@@ -52,9 +48,7 @@ export default function Navbar() {
               height={36}
               className="group-hover:scale-105 transition-transform"
             />
-            <span className={`text-xl font-bold tracking-tight uppercase transition-colors ${
-              isHome && !scrolled ? 'text-white group-hover:text-electric' : 'text-heading group-hover:text-electric'
-            }`}>
+            <span className="text-xl font-bold tracking-tight uppercase transition-colors text-white group-hover:text-electric">
               AiXCEL
             </span>
           </Link>
@@ -73,9 +67,7 @@ export default function Navbar() {
                   className={`flex items-center gap-1 px-4 py-2 text-sm font-semibold uppercase tracking-wide rounded-lg transition-colors ${
                     pathname === link.href || pathname.startsWith(link.href + '/')
                       ? 'text-electric'
-                      : isHome && !scrolled
-                        ? 'text-white/80 hover:text-white'
-                        : 'text-body hover:text-heading'
+                      : 'text-white/70 hover:text-white'
                   }`}
                 >
                   {link.label}
@@ -99,7 +91,7 @@ export default function Navbar() {
                       transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] as const }}
                       className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[420px]"
                     >
-                      <div className="rounded-2xl border border-card-border bg-white p-3 shadow-[0_20px_60px_rgba(0,0,0,0.1)]">
+                      <div className="rounded-2xl border border-white/[0.08] bg-[#0F172A]/95 backdrop-blur-xl p-3 shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
                         <div className="grid gap-1">
                           {link.dropdown.map((item) => {
                             const Icon = getIcon(item.icon);
@@ -107,16 +99,16 @@ export default function Navbar() {
                               <Link
                                 key={item.href}
                                 href={item.href}
-                                className="flex items-start gap-3 p-3 rounded-xl hover:bg-surface-alt transition-colors group/item"
+                                className="flex items-start gap-3 p-3 rounded-xl hover:bg-white/[0.06] transition-colors group/item"
                               >
                                 <div className="w-10 h-10 rounded-lg bg-electric/10 flex items-center justify-center flex-shrink-0 group-hover/item:bg-electric/20 transition-colors">
                                   <Icon className="text-electric" size={20} />
                                 </div>
                                 <div>
-                                  <div className="text-sm font-bold text-heading group-hover/item:text-electric transition-colors">
+                                  <div className="text-sm font-bold text-white group-hover/item:text-electric transition-colors">
                                     {item.title}
                                   </div>
-                                  <div className="text-xs text-caption mt-0.5 leading-relaxed">
+                                  <div className="text-xs text-white/40 mt-0.5 leading-relaxed">
                                     {item.description}
                                   </div>
                                 </div>
@@ -136,7 +128,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/book"
-              className="hidden sm:inline-flex btn-primary text-sm py-2.5 px-5"
+              className="hidden sm:inline-flex btn-nav text-sm py-2.5 px-5"
             >
               <span>Book a Call</span>
               <ArrowRight size={16} />
@@ -144,13 +136,13 @@ export default function Navbar() {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-black/5 transition-colors"
+              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/[0.08] transition-colors"
               aria-label="Toggle menu"
             >
               {isOpen ? (
-                <X size={22} className={isHome && !scrolled ? 'text-white' : 'text-heading'} />
+                <X size={22} className="text-white" />
               ) : (
-                <Menu size={22} className={isHome && !scrolled ? 'text-white' : 'text-heading'} />
+                <Menu size={22} className="text-white" />
               )}
             </button>
           </div>
@@ -165,7 +157,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as const }}
-            className="lg:hidden bg-white/95 backdrop-blur-xl border-t border-black/5 overflow-hidden"
+            className="lg:hidden bg-[#0F172A]/95 backdrop-blur-xl border-t border-white/[0.08] overflow-hidden"
           >
             <div className="container-custom py-6 space-y-2">
               {navLinks.map((link) => (
@@ -178,7 +170,7 @@ export default function Navbar() {
                             activeDropdown === link.label ? null : link.label
                           )
                         }
-                        className="flex items-center justify-between w-full py-3 px-4 text-base font-semibold text-body hover:text-heading rounded-lg hover:bg-surface-alt transition-colors uppercase tracking-wide"
+                        className="flex items-center justify-between w-full py-3 px-4 text-base font-semibold text-white/70 hover:text-white rounded-lg hover:bg-white/[0.06] transition-colors uppercase tracking-wide"
                       >
                         {link.label}
                         <ChevronDown
@@ -200,7 +192,7 @@ export default function Navbar() {
                               <Link
                                 key={item.href}
                                 href={item.href}
-                                className="block py-2.5 px-4 text-sm text-caption hover:text-electric transition-colors"
+                                className="block py-2.5 px-4 text-sm text-white/40 hover:text-electric transition-colors"
                               >
                                 {item.title}
                               </Link>
@@ -214,8 +206,8 @@ export default function Navbar() {
                       href={link.href}
                       className={`block py-3 px-4 text-base font-semibold rounded-lg transition-colors uppercase tracking-wide ${
                         pathname === link.href
-                          ? 'text-electric bg-electric/5'
-                          : 'text-body hover:text-heading hover:bg-surface-alt'
+                          ? 'text-electric bg-electric/10'
+                          : 'text-white/70 hover:text-white hover:bg-white/[0.06]'
                       }`}
                     >
                       {link.label}
@@ -223,8 +215,8 @@ export default function Navbar() {
                   )}
                 </div>
               ))}
-              <div className="pt-4 border-t border-card-border">
-                <Link href="/book" className="btn-primary w-full justify-center text-sm py-3">
+              <div className="pt-4 border-t border-white/[0.08]">
+                <Link href="/book" className="btn-primary-dark w-full justify-center text-sm py-3">
                   <span>Book a Discovery Call</span>
                   <ArrowRight size={16} />
                 </Link>

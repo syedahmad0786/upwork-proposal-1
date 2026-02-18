@@ -137,7 +137,7 @@ export function TwilioLogo({ size = 24 }: LogoProps) {
 export function VercelLogo({ size = 24 }: LogoProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <path d="M12 1L24 22H0L12 1Z" fill="#000000"/>
+      <path d="M12 1L24 22H0L12 1Z" fill="#FFFFFF"/>
     </svg>
   );
 }
@@ -194,9 +194,9 @@ export const techTools: TechTool[] = [
 export function TechLogoItem({ tool }: { tool: TechTool }) {
   const IconComponent = tool.icon;
   return (
-    <div className="flex items-center gap-3 px-5 py-3 rounded-xl border border-card-border bg-surface-card hover:border-electric/40 hover:shadow-lg transition-all duration-300 flex-shrink-0">
+    <div className="flex items-center gap-3 px-5 py-3 rounded-xl border border-white/[0.08] bg-white/[0.04] backdrop-blur-sm hover:border-electric/30 hover:bg-white/[0.08] hover:shadow-[0_8px_32px_rgba(59,130,246,0.1)] transition-all duration-300 flex-shrink-0">
       {IconComponent && <IconComponent size={20} />}
-      <span className="text-sm font-semibold text-heading whitespace-nowrap">{tool.name}</span>
+      <span className="text-sm font-semibold text-white/80 whitespace-nowrap">{tool.name}</span>
     </div>
   );
 }
